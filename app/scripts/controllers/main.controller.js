@@ -80,6 +80,13 @@
             var url = Constante.BASE_URL + "/api/v1/camera/" + $stateParams.id + "/zoom?action=in";
             ComunicationService.post(url);
         }
+
+        function exportVideo() {
+            var desde = $("#date_desde").val() + "T" + $("#time_desde").val() + ":" + $("#segs_desde").val();
+            var hasta = $("#date_hasta").val() + "T" + $("#time_hasta").val() + ":" + $("#segs_hasta").val();
+            var url = "http://148.240.92.98:8484/api/device-manager/export?guid=" + window.cameraId + "&from=" + encodeURIComponent(desde) + "&to=" + encodeURIComponent(hasta);
+            post(url);
+        }
     }
 
 })();
