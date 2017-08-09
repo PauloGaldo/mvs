@@ -4,8 +4,44 @@ const ffmpeg = require('fluent-ffmpeg');
 const server = require('http').Server(express);
 const path = require('path');
 
-function setCameraUrl(id, callback) {
+function mapperCamera(guid, callback) {
+    var id;
+    switch (guid) {
+        case "00000000-0000-0000-0000-00047e02545b":
+            id = 10;
+            break;
+        case "00000000-0000-0000-0000-00047e025587":
+            id = 14;
+            break;
+        case "00000000-0000-0000-0000-00047e025a48":
+            id = 15;
+            break;
+        default:
+            id = 1;
+            break;
+    }
     var path = '/api/device-manager/cameras/' + id + '/stream-url';
+    var options = {
+        hostname: '148.240.92.98',
+        port: 8484,
+        path: path,
+        method: 'GET',
+        auth: 'admin:admin',
+        headers: {
+            'Content-Type': 'text/plain;charset=UTF-8'
+        }
+    };
+    http.request(options, function (res) {
+        res.setEncoding('utf8');
+        res.on('data', function (chunk) {
+            console.log(chunk);
+            return callback(chunk);
+        });
+    }).end();
+}
+
+function setCameraUrl(guid, callback) {
+    var path = '/api/v1/camera/' + guid + '/video/url';
     var options = {
         hostname: '148.240.92.98',
         port: 8484,
@@ -39,22 +75,7 @@ server.listen(80, function () {
  */
 express.get('/video/flash/:id', function (req, res) {
     console.log("id: " + req.params.id);
-    var id;
-    switch (req.params.id) {
-        case "00000000-0000-0000-0000-00047e02545b":
-            id = 10;
-            break;
-        case "00000000-0000-0000-0000-00047e025587":
-            id = 14;
-            break;
-        case "00000000-0000-0000-0000-00047e025a48":
-            id = 15;
-            break;
-        default:
-            id = 1;
-            break;
-    }
-    setCameraUrl(id, function (url) {
+    setCameraUrl(req.params.id, function (url) {
         res.contentType('flv');
         ffmpeg(url)
                 .preset('flashvideo')
@@ -84,22 +105,7 @@ express.get('/video/flash/:id', function (req, res) {
  */
 express.get('/html5/:id', function (req, res) {
     console.log("id: " + req.params.id);
-    var id;
-    switch (req.params.id) {
-        case "00000000-0000-0000-0000-00047e02545b":
-            id = 10;
-            break;
-        case "00000000-0000-0000-0000-00047e025587":
-            id = 14;
-            break;
-        case "00000000-0000-0000-0000-00047e025a48":
-            id = 15;
-            break;
-        default:
-            id = 1;
-            break;
-    }
-    setCameraUrl(id, function (url) {
+    setCameraUrl(req.params.id, function (url) {
         ffmpeg(url)
                 .inputOptions([
                     '-rtsp_transport', 'tcp'
