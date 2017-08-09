@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <title></title>
+        <title>Stream</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width">
         <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
@@ -27,32 +27,32 @@
                     <table  id="controls">
                         <tr>
                             <td>
-                                <button class="btn-cam" type="button" ng-click="mc.zoomOut()" onclick="zoomOut()">Alejar</button>
+                                <button class="btn-cam" type="button" ng-click="mc.zoomOut()">Alejar</button>
                             </td>
                             <td></td>
                             <td>
-                                <button class="btn-cam" type="button" ng-click="mc.zoomIn()" onclick="zoomIn()">Acercar</button>
+                                <button class="btn-cam" type="button" ng-click="mc.zoomIn()">Acercar</button>
                             </td>
                         </tr>
                         <tr>
                             <td colspan="3" >
-                                <button class="btn-cam" type="button" ng-click="mc.moveUp()" onclick="moveUp()">Subir</button>
+                                <button class="btn-cam" type="button" ng-click="mc.moveUp()">Subir</button>
                             </td>
                         </tr>
                         <tr>
                             <td>
-                                <button class="btn-cam" type="button" ng-click="mc.moveLeft()" onclick="moveLeft()">Izq.</button>
+                                <button class="btn-cam" type="button" ng-click="mc.moveLeft()">Izq.</button>
                             </td>
                             <td> 
-                                <button class="btn-cam-stop" type="button" ng-click="mc.stop()" onclick="stop()">STOP</button>
+                                <button class="btn-cam-stop" type="button" ng-click="mc.stop()">STOP</button>
                             </td>
                             <td>
-                                <button class="btn-cam" type="button" ng-click="mc.moveRight()" onclick="moveRight()">Der.</button>
+                                <button class="btn-cam" type="button" ng-click="mc.moveRight()">Der.</button>
                             </td>
                         </tr>
                         <tr>
                             <td colspan="3">
-                                <button class="btn-cam" type="button" ng-click="mc.moveDown()" onclick="moveDown()">Bajar</button>
+                                <button class="btn-cam" type="button" ng-click="mc.moveDown()">Bajar</button>
                             </td>
                         </tr>
                     </table>
@@ -92,8 +92,7 @@
         <!-- endbower -->
         <!-- endbuild -->
 
-        <!-- build:js({.tmp,app}) scripts/scripts.js -->
-        <script src="scripts/index.js"></script>        
+        <!-- build:js({.tmp,app}) scripts/scripts.js -->     
         <script src="scripts/app.main.js"></script>        
         <script src="scripts/app.config.js"></script>
         <script src="scripts/app.constant.js"></script>
