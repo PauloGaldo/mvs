@@ -18,43 +18,45 @@
         <!--[if lte IE 8]>
           <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->                
-        <div class="container">
-            <button ui-sref="flowplayer" style="display: bloack;">flowvideo</button>
+        <div class="row">
+            <button ui-sref="flowplayer" style="display: none;">flowvideo</button>
             <button ui-sref="nativo" style="display: none;">nativo</button>
-            <div ui-view></div>
-            <center id="controls" ng-controller="MainCtrl as mc">
-                <table>
-                    <tr>
-                        <td>
-                            <button class="btn-cam" type="button" ng-click="mc.zoomOut()">Alejar</button>
-                        </td>
-                        <td></td>
-                        <td>
-                            <button class="btn-cam" type="button" ng-click="mc.zoomIn()">Acercar</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="3" >
-                            <button class="btn-cam" type="button" ng-click="mc.moveUp()">Subir</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <button class="btn-cam" type="button" ng-click="mc.moveLeft()">Izq.</button>
-                        </td>
-                        <td> 
-                            <button class="btn-cam-stop" type="button" ng-click="mc.stop()">STOP</button>
-                        </td>
-                        <td>
-                            <button class="btn-cam" type="button" ng-click="mc.moveRight()">Der.</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="3">
-                            <button class="btn-cam" type="button" ng-click="mc.moveDown()">Bajar</button>
-                        </td>
-                    </tr>
-                </table>
+            <div class="col-lg-12" ui-view style="text-align: center;"></div>
+            <div class="col-lg-12" ng-controller="MainCtrl as mc">
+                <center class="row">
+                    <table  id="controls">
+                        <tr>
+                            <td>
+                                <button class="btn-cam" type="button" ng-click="mc.zoomOut()" onclick="zoomOut()">Alejar</button>
+                            </td>
+                            <td></td>
+                            <td>
+                                <button class="btn-cam" type="button" ng-click="mc.zoomIn()" onclick="zoomIn()">Acercar</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="3" >
+                                <button class="btn-cam" type="button" ng-click="mc.moveUp()" onclick="moveUp()">Subir</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <button class="btn-cam" type="button" ng-click="mc.moveLeft()" onclick="moveLeft()">Izq.</button>
+                            </td>
+                            <td> 
+                                <button class="btn-cam-stop" type="button" ng-click="mc.stop()" onclick="stop()">STOP</button>
+                            </td>
+                            <td>
+                                <button class="btn-cam" type="button" ng-click="mc.moveRight()" onclick="moveRight()">Der.</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="3">
+                                <button class="btn-cam" type="button" ng-click="mc.moveDown()" onclick="moveDown()">Bajar</button>
+                            </td>
+                        </tr>
+                    </table>
+                </center>                
                 <div class="margins" style="display: none;">
                     <form name="exportForm" id="export_form">
                         <div class="margins">
@@ -75,7 +77,7 @@
                         </div>                            
                     </form> 
                 </div>                               
-            </center>
+            </div>
         </div>    
 
         <!-- build:js(.) scripts/vendor.js -->
@@ -86,10 +88,12 @@
         <script src="bower_components/angular-aria/angular-aria.js"></script>
         <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
         <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+        <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
         <!-- endbower -->
         <!-- endbuild -->
 
         <!-- build:js({.tmp,app}) scripts/scripts.js -->
+        <script src="scripts/index.js"></script>        
         <script src="scripts/app.main.js"></script>        
         <script src="scripts/app.config.js"></script>
         <script src="scripts/app.constant.js"></script>
