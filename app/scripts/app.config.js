@@ -9,16 +9,15 @@
 
     function Config($stateProvider, $locationProvider) {
         $stateProvider
-                /*MODULO CONSULTAS*/
                 .state('flowplayer', {
                     url: '/flowplayer?id',
                     templateUrl: "views/flowplayer.html",
-                    controller: 'MainCtrl as vm'
+                    controller: 'FlashCtrl as vm'
                 })
                 .state('nativo', {
                     url: '/nativo?id',
                     templateUrl: "views/nativo.html",
-                    controller: 'NativoCtrlr as vm'
+                    controller: 'NativeCtrlr as vm'
                 });
 //        $locationProvider.html5Mode(true);
     }
