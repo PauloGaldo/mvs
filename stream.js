@@ -1,24 +1,56 @@
 const express = require('express');
 const app = express();
 const ffmpeg = require('fluent-ffmpeg');
-const http = require('http').createServer(app);
+const http = require('http').Server(app);
 const sender = require('http');
 const io = require('socket.io')(http);
 const Log = require('log');
-let LOGGER = new Log('debug');
-let port = process.env.PORT || 8080;
+const logger = new Log('debug');
+const port = process.env.PORT || 8080;
 
-app.listen(port, function () {
-    LOGGER.info('Listening port: ' + port);
+http.listen(port, function () {
+    logger.info('Listening port: ' + port);
 });
 
 app.use(express.static(__dirname + '/app'));
 app.use('/bower_components', express.static(__dirname + '/bower_components'));
-//app.use('/socket.io', express.static(__dirname + '/socket.io'));
 
 io.on('connection', function (socket) {
-    LOGGER.info('connected to socket', socket);
+    logger.info('connected to socket');
+    socket.emit('start', 'connected to socket');
+    socket.on('streaming', function (guid) {
+        logger.info(guid);
+        var stream = ffmpeg('rtsp://admin:admin@187.189.153.102:5554')
+                .inputOptions([
+                    '-rtsp_transport', 'tcp',
+                    '-r', '10'                    
+                ])
+                .outputOptions([
+//                    '-c:v', 'libtheora',
+                    '-q:v', '3',
+                    '-updatefirst', '1',
+                    '-f', 'image2',
+                    '-maxrate', '1000k',
+                    '-bufsize', '435k',
+                    '-s', '320x240'
+                ])
+//                .format('ogg')
+                .on('end', function () {
+                    logger.info('Stream has ended');
+                })
+                .on('error', function (err) {
+                    logger.info('an error happened: ' + err.message);
+                })
+                .on('start', function (commandLine) {
+                    logger.info('Spawned Ffmpeg with command: ' + commandLine);
+                });
+        var ffstream = stream.pipe();
+        ffstream.on('data', function (resp) {
+            socket.emit('data', resp);
+        });
+    });
 });
+
 
 /**
  * 00000000-0000-0000-0000-00047e02545b
@@ -28,7 +60,7 @@ io.on('connection', function (socket) {
  * @param {type} res 
  */
 app.get('/video/flash/:id', function (req, res) {
-    console.log("id: " + req.params.id);
+    logger.info("id: " + req.params.id);
     setCameraUrl(req.params.id, function (url) {
         res.contentType('flv');
         ffmpeg(url)
@@ -41,10 +73,10 @@ app.get('/video/flash/:id', function (req, res) {
                     '-bufsize', '1835k'
                 ])
                 .on('end', function () {
-                    console.log('Stream has ended');
+                    logger.info('Stream has ended');
                 })
                 .on('error', function (err) {
-                    console.log('an error happened: ' + err.message);
+                    logger.info('an error happened: ' + err.message);
                 })
                 .pipe(res, {end: true});
     });
@@ -57,27 +89,27 @@ app.get('/video/flash/:id', function (req, res) {
  * @param {type} req 
  * @param {type} res 
  */
-app.get('/html5/:id', function (req, res) {
-    console.log("id: " + req.params.id);
-    setCameraUrl(req.params.id, function (url) {
-        ffmpeg(url)
-                .inputOptions([
-                    '-rtsp_transport', 'tcp'
-                ])
-                .outputOptions([
-                    '-c:v', 'libtheora',
-                    '-maxrate', '4000k',
-                    '-bufsize', '1835k'
-                ])
-                .format('ogg')
-                .on('end', function () {
-                    console.log('Stream has ended');
-                })
-                .on('error', function (err) {
-                    console.log('an error happened: ' + err.message);
-                })
-                .pipe(res, {end: true});
-    });
+app.get('/video/html5/:id', function (req, res) {
+    logger.info("id: " + req.params.id);
+//    setCameraUrl(req.params.id, function (url) {
+    ffmpeg('rtsp://admin:admin@187.189.153.102:5554')
+            .inputOptions([
+                '-rtsp_transport', 'tcp'
+            ])
+            .outputOptions([
+                '-c:v', 'libtheora',
+                '-maxrate', '4000k',
+                '-bufsize', '1835k'
+            ])
+            .format('ogg')
+            .on('end', function () {
+                logger.info('Stream has ended');
+            })
+            .on('error', function (err) {
+                logger.info('an error happened: ' + err.message);
+            })
+            .pipe(res, {end: true});
+//    });
 });
 
 function setCameraUrl(guid, callback) {
@@ -95,7 +127,7 @@ function setCameraUrl(guid, callback) {
     sender.request(options, function (res) {
         res.setEncoding('utf8');
         res.on('data', function (chunk) {
-            console.log(chunk);
+            logger.info(chunk);
             return callback(chunk);
         });
     }).end();
@@ -131,7 +163,7 @@ function mapperCamera(guid, callback) {
     sender.request(options, function (res) {
         res.setEncoding('utf8');
         res.on('data', function (chunk) {
-            console.log(chunk);
+            logger.info(chunk);
             return callback(chunk);
         });
     }).end();
