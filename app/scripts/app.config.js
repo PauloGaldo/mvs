@@ -18,6 +18,11 @@
                     url: '/nativo?id',
                     templateUrl: "views/nativo.html",
                     controller: 'NativeCtrlr as vm'
+                })
+                .state('socket', {
+                    url: '/socket?id',
+                    templateUrl: "views/socket.html",
+                    controller: 'SocketCtrlr as vm'
                 });
 //        $locationProvider.html5Mode(true);
     }
