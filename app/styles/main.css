@@ -1,61 +1,11 @@
-#date_desde::-webkit-outer-spin-button,
-#date_desde::-webkit-inner-spin-button,
-#date_hasta::-webkit-outer-spin-button,
-#date_hasta::-webkit-inner-spin-button{
+#date_format::-webkit-outer-spin-button,
+#date_format::-webkit-inner-spin-button{
     -webkit-appearance: none;
     margin: 0;
 }
-.margins{
-    margin: 10px;
-}
-.form-control{
-    width: 120px;
-    height: 25px;
-    margin: 10px;
-}
-.form-control-xs{
-    width: 40px;
-    height: 25px;
-    margin: 10px;
-}
-.label{
-    width: 90px;
-    height: 25px;
-    margin: 10px;
-}
 button{
-    cursor: pointer;
-    box-shadow: 0px 3px 0px #2b638f, 0px 3px 15px rgba(0,0,0,.4);
+    width: 100px;
 }
-.btn-cam{
-    width: 85px;
-    height: 30px;
-    background-color: rgb(68, 199, 103);
-    border: 1px solid rgb(24, 171, 41);
-    color: rgb(255, 255, 255);
-    font-weight: bolder;
-    border-radius: 10px;
-}
-.btn-cam-stop{
-    width: 85px;
-    height: 25px;
-    background-color: rgb(255, 9, 0);
-    border: 1px solid rgb(160, 6, 6);
-    color: rgb(255, 255, 255);
-    font-weight: bolder;
-    border-radius: 10px;
-}
-table{
-    width: 30%;
-    border: 1px solid black;
-    border-radius: 10px;
-}
-#videocontent, #imageDisplay{
-    background: rgba(0, 0, 0, 0.7);
-    height: 400px;
-    width: 600px;
-    float: left;
-}
-#controls{
-    text-align: center;
+td{
+    border-top: 0px solid #ddd !important;
 }
