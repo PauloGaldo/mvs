@@ -6,6 +6,7 @@
                 'ngAnimate',
                 'ngAria',
                 'ngSanitize',
+                'ngMessages',
                 'ui.router'
             ]);
 })();

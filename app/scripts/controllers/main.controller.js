@@ -9,6 +9,7 @@
 
     function MainCtrl($stateParams, Constante, ComunicationService) {
         var vm = this;
+        vm.cameraMovements = null;
         vm.moveRight = moveRight;
         vm.moveLeft = moveLeft;
         vm.moveUp = moveUp;
@@ -24,7 +25,16 @@
          */
         function moveRight() {
             var url = Constante.BASE_URL + "/api/v1/camera/" + $stateParams.id + "/move?action=right";
-            ComunicationService.post(url);
+            vm.cameraMovements = 'Moviendo a la derecha';
+            ComunicationService
+                    .post(url)
+                    .then(function (response) {
+                        if (response.status === 200) {
+                            vm.cameraMovements = response.data.msg;
+                        } else {
+                            vm.cameraMovements = 'Error al mover camara';
+                        }
+                    });
         }
 
         /**
@@ -33,7 +43,16 @@
          */
         function moveLeft() {
             var url = Constante.BASE_URL + "/api/v1/camera/" + $stateParams.id + "/move?action=left";
-            ComunicationService.post(url);
+            vm.cameraMovements = 'Moviendo a la izquierda';
+            ComunicationService
+                    .post(url)
+                    .then(function (response) {
+                        if (response.status === 200) {
+                            vm.cameraMovements = response.data.msg;
+                        } else {
+                            vm.cameraMovements = 'Error al mover camara';
+                        }
+                    });
         }
 
         /**
@@ -42,7 +61,16 @@
          */
         function moveUp() {
             var url = Constante.BASE_URL + "/api/v1/camera/" + $stateParams.id + "/move?action=up";
-            ComunicationService.post(url);
+            vm.cameraMovements = 'Moviendo arriba';
+            ComunicationService
+                    .post(url)
+                    .then(function (response) {
+                        if (response.status === 200) {
+                            vm.cameraMovements = response.data.msg;
+                        } else {
+                            vm.cameraMovements = 'Error al mover camara';
+                        }
+                    });
         }
 
         /**
@@ -51,7 +79,16 @@
          */
         function moveDown() {
             var url = Constante.BASE_URL + "/api/v1/camera/" + $stateParams.id + "/move?action=down";
-            ComunicationService.post(url);
+            vm.cameraMovements = 'Moviendo abajo';
+            ComunicationService
+                    .post(url)
+                    .then(function (response) {
+                        if (response.status === 200) {
+                            vm.cameraMovements = response.data.msg;
+                        } else {
+                            vm.cameraMovements = 'Error al mover camara';
+                        }
+                    });
         }
 
         /**
@@ -60,7 +97,16 @@
          */
         function stop() {
             var url = Constante.BASE_URL + "/api/v1/camera/" + $stateParams.id + "/move?action=stop";
-            ComunicationService.post(url);
+            vm.cameraMovements = 'Deteniendo movimiento';
+            ComunicationService
+                    .post(url)
+                    .then(function (response) {
+                        if (response.status === 200) {
+                            vm.cameraMovements = response.data.msg;
+                        } else {
+                            vm.cameraMovements = 'Error al mover camara';
+                        }
+                    });
         }
 
         /**
@@ -69,7 +115,16 @@
          */
         function zoomOut() {
             var url = Constante.BASE_URL + "/api/v1/camera/" + $stateParams.id + "/zoom?action=out";
-            ComunicationService.post(url);
+            vm.cameraMovements = 'Alejando camara';
+            ComunicationService
+                    .post(url)
+                    .then(function (response) {
+                        if (response.status === 200) {
+                            vm.cameraMovements = response.data.msg;
+                        } else {
+                            vm.cameraMovements = 'Error al mover camara';
+                        }
+                    });
         }
 
         /**
@@ -78,7 +133,16 @@
          */
         function zoomIn() {
             var url = Constante.BASE_URL + "/api/v1/camera/" + $stateParams.id + "/zoom?action=in";
-            ComunicationService.post(url);
+            vm.cameraMovements = 'Acercando camara';
+            ComunicationService
+                    .post(url)
+                    .then(function (response) {
+                        if (response.status === 200) {
+                            vm.cameraMovements = response.data.msg;
+                        } else {
+                            vm.cameraMovements = 'Error al mover camara';
+                        }
+                    });
         }
 
         function exportVideo() {
