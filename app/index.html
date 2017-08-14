@@ -5,78 +5,184 @@
         <title>Stream</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width">
-        <link rel="stylesheet" href="styles/main.css">
+        <link href="styles/main.css" rel="stylesheet" type="text/css"/>
+        <link href="bower_components/bootstrap/dist/css/bootstrap.css" rel="stylesheet" type="text/css"/>
     </head>
-    <body ng-app="mvsApp">               
+    <body ng-app="mvsApp" ng-cloak>               
         <div class="row">
             <button ui-sref="flowplayer" style="display: none;">flowvideo</button>
             <button ui-sref="nativo" style="display: none;">nativo</button>
-            <div class="col-lg-12" ui-view style="text-align: center;"></div>
-            <div class="col-lg-12" ng-controller="MainCtrl as mc">
-                <center class="row">
-                    <table  id="controls">
-                        <tr>
-                            <td>
-                                <button class="btn-cam" type="button" ng-click="mc.zoomOut()">Alejar</button>
-                            </td>
-                            <td></td>
-                            <td>
-                                <button class="btn-cam" type="button" ng-click="mc.zoomIn()">Acercar</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="3" >
-                                <button class="btn-cam" type="button" ng-click="mc.moveUp()">Subir</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <button class="btn-cam" type="button" ng-click="mc.moveLeft()">Izq.</button>
-                            </td>
-                            <td> 
-                                <button class="btn-cam-stop" type="button" ng-click="mc.stop()">STOP</button>
-                            </td>
-                            <td>
-                                <button class="btn-cam" type="button" ng-click="mc.moveRight()">Der.</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="3">
-                                <button class="btn-cam" type="button" ng-click="mc.moveDown()">Bajar</button>
-                            </td>
-                        </tr>
-                    </table>
-                </center>                
-                <div class="margins" style="display: none;">
-                    <form name="exportForm" id="export_form">
-                        <div class="margins">
-                            <label class="label">Desde</label>
-                            <input type="date" required class="form-control" id="date_desde">
-                            <input type="time" required class="form-control" id="time_desde">
-                            <input type="number" required class="form-control-xs" id="segs_desde" min="0" max="59">
+            <div class="col-lg-6" ui-view style="text-align: center;"></div>
+            <div class="col-lg-6" ng-controller="MainCtrl as mc">
+                <div class="row" style="margin-top: 20px;">
+                    <div class="col-lg-6 col-lg-offset-3">
+                        <table class="table" style="text-align: center;">
+                            <tr><td colspan="3">&nbsp;{{mc.cameraMovements}}</td></tr>
+                            <tr>                                
+                                <td>
+                                    <button class="btn-sm btn-success" type="button" ng-click="mc.zoomOut()"
+                                            data-toggle="tooltip" title="Alejar">
+                                        <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
+                                    </button>
+                                </td>
+                                <td></td>
+                                <td>
+                                    <button class="btn-sm btn-success" type="button" ng-click="mc.zoomIn()"
+                                            data-toggle="tooltip" title="Acercar">
+                                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="3" >
+                                    <button class="btn-sm btn-success" type="button" ng-click="mc.moveUp()"
+                                            data-toggle="tooltip" title="Subir">
+                                        <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <button class="btn-sm btn-success" type="button" ng-click="mc.moveLeft()"
+                                            data-toggle="tooltip" title="Izquierda">
+                                        <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>
+                                    </button>
+                                </td>
+                                <td> 
+                                    <button class="btn-sm btn-danger" type="button" ng-click="mc.stop()"
+                                            data-toggle="tooltip" title="Detener">
+                                        <span class="glyphicon glyphicon-stop" aria-hidden="true"></span>
+                                    </button>
+                                </td>
+                                <td>
+                                    <button class="btn-sm btn-success" type="button" ng-click="mc.moveRight()"
+                                            data-toggle="tooltip" title="Derecha">
+                                        <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="3">
+                                    <button class="btn-sm btn-success" type="button" ng-click="mc.moveDown()"
+                                            data-toggle="tooltip" title="Abajo">
+                                        <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
+                                    </button>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>                                             
+                </div>
+                <div class="row" style="margin-right: 20px;">
+                    <form name="exportForm" id="export_form">                    
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <div class="form-group" ng-class="{'has-error': exportForm.fechaDesde.$touched && exportForm.fechaDesde.$invalid}">
+                                    <label>Desde</label>
+                                    <div class="styled-select">
+                                        <input ng-model="vm.frm.fechaDesde" id="date_format"
+                                               type="date" name="fechaDesde" required
+                                               class="form-control">
+                                    </div>
+                                    <div ng-messages="exportForm.fechaDesde.$touched && exportForm.fechaDesde.$error" role="alert">
+                                        <span style="font-size: 9pt;" class="help-block" ng-message="required">Campo Obligatorio</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group" ng-class="{'has-error': exportForm.tiempoDesde.$touched && exportForm.tiempoDesde.$invalid}">
+                                    <label>&nbsp;</label>
+                                    <div class="styled-select">
+                                        <input ng-model="vm.frm.tiempoDesde"
+                                               type="time" name="tiempoDesde" required
+                                               class="form-control">
+                                    </div>
+                                    <div ng-messages="exportForm.tiempoDesde.$touched && exportForm.tiempoDesde.$error" role="alert">
+                                        <span style="font-size: 9pt;" class="help-block" ng-message="required">Campo Obligatorio</span>
+                                        <span style="font-size: 9pt;" class="help-block" ng-message="time">Hora/Minuto invalidos</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group" ng-class="{'has-error': exportForm.segundoDesde.$touched && exportForm.segundoDesde.$invalid}">
+                                    <label>&nbsp;</label>
+                                    <div class="styled-select">
+                                        <input ng-model="vm.frm.segundoDesde"
+                                               min="0" max="59" maxlength="2"
+                                               type="number" name="segundoDesde" required
+                                               class="form-control">
+                                    </div>
+                                    <div ng-messages="exportForm.segundoDesde.$touched && exportForm.segundoDesde.$error" role="alert">
+                                        <span style="font-size: 9pt;" class="help-block" ng-message="required">Campo Obligatorio</span>
+                                        <span style="font-size: 9pt;" class="help-block" ng-message="min">Valor minimo 0</span>
+                                        <span style="font-size: 9pt;" class="help-block" ng-message="max">Valor maximo 59</span>
+                                        <span style="font-size: 9pt;" class="help-block" ng-message="maxlength">Valor maximo 59</span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="margins">
-                            <label class="label">Hasta</label>
-                            <input type="date" required class="form-control" id="date_hasta">
-                            <input type="time" required class="form-control" id="time_hasta">
-                            <input type="number" required class="form-control-xs" id="segs_hasta" min="0" max="59">
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <div class="form-group" ng-class="{'has-error': exportForm.fechaHasta.$touched && exportForm.fechaHasta.$invalid}">
+                                    <label>Hasta</label>
+                                    <div class="styled-select">
+                                        <input ng-model="vm.frm.fechaHasta" id="date_format"
+                                               type="date" name="fechaHasta" required
+                                               class="form-control">
+                                    </div>
+                                    <div ng-messages="exportForm.fechaHasta.$touched && exportForm.fechaHasta.$error" role="alert">
+                                        <span style="font-size: 9pt;" class="help-block" ng-message="required">Campo Obligatorio</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group" ng-class="{'has-error': exportForm.tiempoHasta.$touched && exportForm.tiempoHasta.$invalid}">
+                                    <label>&nbsp;</label>
+                                    <div class="styled-select">
+                                        <input ng-model="vm.frm.tiempoHasta"
+                                               type="time" name="tiempoHasta" required
+                                               class="form-control">
+                                    </div>
+                                    <div ng-messages="exportForm.tiempoHasta.$touched && exportForm.tiempoHasta.$error" role="alert">
+                                        <span style="font-size: 9pt;" class="help-block" ng-message="required">Campo Obligatorio</span>
+                                        <span style="font-size: 9pt;" class="help-block" ng-message="time">Hora/Minuto invalidos</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group" ng-class="{'has-error': exportForm.segundoHasta.$touched && exportForm.segundoHasta.$invalid}">
+                                    <label>&nbsp;</label>
+                                    <div class="styled-select">
+                                        <input ng-model="vm.frm.segundoHasta"
+                                               min="0" max="59" maxlength="2"
+                                               type="number" name="segundoHasta" required
+                                               class="form-control">
+                                    </div>
+                                    <div ng-messages="exportForm.segundoHasta.$touched && exportForm.segundoHasta.$error" role="alert">
+                                        <span style="font-size: 9pt;" class="help-block" ng-message="required">Campo Obligatorio</span>
+                                        <span style="font-size: 9pt;" class="help-block" ng-message="min">Valor minimo 0</span>
+                                        <span style="font-size: 9pt;" class="help-block" ng-message="max">Valor maximo 59</span>
+                                        <span style="font-size: 9pt;" class="help-block" ng-message="maxlength">Valor maximo 59</span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div class="margins" style="text-align: center;">
-                            <button class="btn-cam" type="button" onclick="exportVideo()">Exportar</button>
-                            <button class="btn-cam" type="button" onclick="exportInfo()">Exp. Info</button>
+                            <button class="btn-success" type="button" onclick="exportVideo()">Exportar</button>
+                            <button class="btn-success" type="button" onclick="exportInfo()">Exp. Info</button>
                         </div>                            
                     </form> 
-                </div>                               
+                </div>
             </div>
-        </div>    
+        </div>
         <script src="bower_components/jquery/dist/jquery.js"></script>
         <script src="bower_components/angular/angular.js"></script>
         <script src="bower_components/angular-animate/angular-animate.js"></script>
         <script src="bower_components/angular-aria/angular-aria.js"></script>
+        <script src="bower_components/angular-messages/angular-messages.js"></script>
         <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
         <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
         <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
-        
+
         <script src="socket.io/socket.io.js"></script>
         <script src="scripts/app.main.js"></script>        
         <script src="scripts/app.config.js"></script>
@@ -86,5 +192,10 @@
         <script src="scripts/controllers/native.controller.js"></script>
         <script src="scripts/controllers/socket.controller.js"></script>
         <script src="scripts/services/comunication.service.js"></script>
+        <script>
+                                $(document).ready(function () {
+                                    $('[data-toggle="tooltip"]').tooltip();
+                                });
+        </script>
     </body>
 </html>
