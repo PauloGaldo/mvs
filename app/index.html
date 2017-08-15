@@ -12,10 +12,10 @@
         <div class="row">
             <button ui-sref="flowplayer" style="display: none;">flowvideo</button>
             <button ui-sref="nativo" style="display: none;">nativo</button>
-            <div class="col-lg-6 ui-view" style="text-align: center;"></div>
-            <div class="col-lg-6" ng-controller="MainCtrl as mc">
+            <div class="col-lg-6 col-sm-8 col-md-8" ui-view style="text-align: center;"></div>
+            <div class="col-lg-6 col-sm-12 col-md-12" ng-controller="MainCtrl as mc">
                 <div class="row">
-                    <div class="col-lg-4 col-lg-offset-2" style="margin-top: 20px;">                    
+                    <div class="col-lg-4 col-lg-offset-2" style="margin-top: 20px; background-color: gainsboro;">                    
                         <table class="table" style="text-align: center;">
                             <tr><td colspan="3">&nbsp;{{mc.cameraMovements}}</td></tr>
                             <tr>
@@ -70,8 +70,8 @@
                     </div>                    
                 </div>
                 <div class="row">
-                    <div class="col-lg-8" style="margin-top: 20px;">
-                        <div class="row">
+                    <div class="col-lg-8" style="background-color: gainsboro;">
+                        <div class="row" style="margin-top: 20px;">
                             <form name="exportForm" ng-submit="mc.exportVideo(mc.frm, exportForm)" novalidate>
                                 <div class="col-lg-12">
                                     <div class="form-group" ng-class="{'has-error': exportForm.fechaDesde.$touched && exportForm.fechaDesde.$invalid}">
@@ -101,15 +101,14 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div style="text-align: center;">
+                                <div style="text-align: center; margin-bottom: 20px;">
                                     <button class="btn-sm btn-success btn-size" type="submit"
                                             ng-class="{'not_allowed': mc.habilitar.btnExportar}"
+                                            ng-show="mc.visible.btnExportar"
                                             ng-disabled="mc.habilitar.btnExportar">{{mc.text.btnExportar}}</button>
-                                    <button class="btn-sm btn-success" type="button" 
-                                            ng-click="mc.descargarVideo()"
-                                            ng-class="{'not_allowed': mc.habilitar.btnDownload}"
-                                            ng-show="mc.visible.btnDownload"
-                                            ng-disabled="mc.habilitar.btnDownload">{{mc.text.btnDownload}}</button>
+                                    <a href="{{mc.text.url}}" download="{{mc.text.descargar}}"
+                                       ng-show="mc.visible.btnDownload"
+                                       ng-click="mc.descargarVideo()">{{mc.text.btnDownload}}</a>                                    
                                 </div>
                             </form>
                         </div>
@@ -140,9 +139,9 @@
         <script src="scripts/controllers/socket.controller.js"></script>
         <script src="scripts/services/comunication.service.js"></script>
         <script>
-                                            $(document).ready(function () {
-                                                $('[data-toggle="tooltip"]').tooltip();
-                                            });
+                                                $(document).ready(function () {
+                                                    $('[data-toggle="tooltip"]').tooltip();
+                                                });
         </script>
     </body>
 </html>
