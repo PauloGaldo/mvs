@@ -5,11 +5,20 @@
             .module('mvsApp')
             .controller('MainCtrl', MainCtrl);
 
-    MainCtrl.$inject = ['$stateParams', 'Constante', 'ComunicationService'];
+    MainCtrl.$inject = ['$stateParams', 'Constante', 'ComunicationService', 'localStorageService', '$timeout', 'Blob', 'FileSaver'];
 
-    function MainCtrl($stateParams, Constante, ComunicationService) {
+    function MainCtrl($stateParams, Constante, ComunicationService, localStorageService, $timeout, Blob, FileSaver) {
         var vm = this;
+        /*VARIABLES*/
+        vm.frm = {};
+        vm.disabled = {btnDownload: false};
         vm.cameraMovements = null;
+        vm.guids = [];
+        vm.visible = {btnDownload: false};
+        vm.text = {btnDownload: 'Descargar'};
+        /*FUNCIONES Y/O METODOS*/
+        vm.descargarVideo = descargarVideo;
+        vm.exportVideo = exportVideo;
         vm.moveRight = moveRight;
         vm.moveLeft = moveLeft;
         vm.moveUp = moveUp;
@@ -18,6 +27,52 @@
         vm.zoomOut = zoomOut;
         vm.zoomIn = zoomIn;
 
+        $timeout(checkForExports, 10000);
+
+        /**
+         * Funcion para checkear estado de exportacion
+         * @returns {undefined}
+         */
+        function checkForExports() {
+            var control = localStorageService.get('guids');
+            if (control) {
+                if (control.length > 0) {
+                    console.log(control);
+                    var url = Constante.BASE_URL + "/api/v1/camera/" + $stateParams.id + "/video/export/" + control[0].guid + "/info";
+                    ComunicationService
+                            .get(url)
+                            .then(function (response) {
+                                console.log(response);
+                                if (response.data.exportStatus.finished) {
+                                    vm.visible.btnDownload = true;
+                                    vm.disabled.btnDownload = false;
+                                    vm.text.btnDownload = 'Descargar';
+                                }
+                            });
+                }
+            }
+            $timeout(checkForExports, 10000);
+        }
+
+        /**
+         * Funcion para descargar video exportado
+         * @returns {undefined}
+         */
+        function descargarVideo() {
+            vm.disabled.btnDownload = true;
+            vm.text.btnDownload = 'Descargando';
+            var control = localStorageService.get('guids');
+            var url = Constante.BASE_URL + "/api/v1/camera/" + $stateParams.id + "/video/export/" + control[0].guid;
+            ComunicationService
+                    .download(url)
+                    .then(function (response) {
+                        var data = new Blob([response.data], {type: 'video/mp4'});
+                        FileSaver.saveAs(data, 'export_from' + control[0].from + '_to' + control[0].to + '.mp4');
+                        control.splice(0, 1);
+                        localStorageService.set('guids', control);
+                        vm.visible.btnDownload = false;
+                    });
+        }
 
         /**
          * Movimiento a la derecha
@@ -145,11 +200,35 @@
                     });
         }
 
-        function exportVideo() {
-            var desde = $("#date_desde").val() + "T" + $("#time_desde").val() + ":" + $("#segs_desde").val();
-            var hasta = $("#date_hasta").val() + "T" + $("#time_hasta").val() + ":" + $("#segs_hasta").val();
-            var url = "http://148.240.92.98:8484/api/device-manager/export?guid=" + window.cameraId + "&from=" + encodeURIComponent(desde) + "&to=" + encodeURIComponent(hasta);
-            post(url);
+        /**
+         * Funcion para exportar video
+         * @param {type} model
+         * @param {type} form
+         * @returns {undefined}
+         */
+        function exportVideo(model, form) {
+            console.log(model);
+            angular.forEach(form.$$controls, function (field) {
+                field.$setTouched();
+            });
+            if (form.$valid) {
+                var splitDesde = model.fechaDesde.toISOString().split("T");
+                var fechaDesde = splitDesde[0] + "T" + model.fechaDesde.toLocaleTimeString() + ".000";
+                var splitHasta = model.fechaHasta.toISOString().split("T");
+                var fechaHasta = splitHasta[0] + "T" + model.fechaHasta.toLocaleTimeString() + ".000";
+                var url = Constante.BASE_URL + "/api/v1/camera/" + $stateParams.id + "/video/export?from=" + fechaDesde + "&to=" + fechaHasta;
+                ComunicationService
+                        .post(url)
+                        .then(function (response) {
+                            console.log(response);
+                            vm.guids.push({
+                                from: fechaDesde,
+                                to: fechaHasta,
+                                guid: response.data.exportGUIDs[0]
+                            });
+                            localStorageService.set('guids', vm.guids);
+                        });
+            }
         }
     }
 
