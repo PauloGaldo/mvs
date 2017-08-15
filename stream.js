@@ -33,7 +33,7 @@ io.on('connection', function (socket) {
                         '-f', 'image2',
 //                        '-maxrate', '1000k',
 //                        '-bufsize', '435k',
-                        '-s', '320x240'
+                        '-s', '1280x720'
                     ])
 //                .format('ogg')
                     .on('end', function () {
