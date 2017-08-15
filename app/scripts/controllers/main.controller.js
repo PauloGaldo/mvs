@@ -17,7 +17,7 @@
         };
         vm.cameraMovements = null;
         vm.guids = [];
-        vm.visible = {btnDownload: false};
+        vm.visible = {btnDownload: false, btnExportar: true};
         vm.text = {
             btnDownload: 'Descargar',
             btnExportar: 'Exportar'
@@ -51,9 +51,10 @@
                             .then(function (response) {
                                 console.log(response);
                                 if (response.data.exportStatus.finished) {
+                                    vm.text.url = Constante.BASE_URL + "/api/v1/camera/" + $stateParams.id + "/video/export/" + control[0].guid;
+                                    vm.text.descargar = 'export_from' + control[0].from + '_to' + control[0].to + '.mp4';
                                     vm.visible.btnDownload = true;
-                                    vm.habilitar.btnDownload = false;
-                                    vm.text.btnDownload = 'Descargar';
+                                    vm.visible.btnExportar = false;
                                 }
                             });
                 } else {
@@ -71,20 +72,12 @@
          */
         function descargarVideo() {
             vm.habilitar.btnDownload = true;
-            vm.text.btnDownload = 'Descargando';
             var control = localStorageService.get('guids');
-            var url = Constante.BASE_URL + "/api/v1/camera/" + $stateParams.id + "/video/export/" + control[0].guid;
-            ComunicationService
-                    .download(url)
-                    .then(function (response) {
-                        var data = new Blob([response.data], {type: 'video/mp4'});
-                        FileSaver.saveAs(data, 'export_from' + control[0].from + '_to' + control[0].to + '.mp4');
-                        control.splice(0, 1);
-                        localStorageService.set('guids', control);
-                        vm.visible.btnDownload = false;
-                        vm.habilitar.btnExportar = false;
-                        vm.text.btnExportar = 'Exportar';
-                    });
+            control.splice(0, 1);
+            localStorageService.set('guids', control);
+            vm.visible.btnDownload = false;
+            vm.habilitar.btnExportar = false;
+            vm.visible.btnExportar = true;
         }
 
         /**
@@ -226,9 +219,9 @@
             });
             if (form.$valid) {
                 var splitDesde = model.fechaDesde.toISOString().split("T");
-                var fechaDesde = splitDesde[0] + "T" + model.fechaDesde.toLocaleTimeString() + ".000";
+                var fechaDesde = splitDesde[0] + "T" + model.fechaDesde.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit', second: '2-digit'}) + ".000";
                 var splitHasta = model.fechaHasta.toISOString().split("T");
-                var fechaHasta = splitHasta[0] + "T" + model.fechaHasta.toLocaleTimeString() + ".000";
+                var fechaHasta = splitHasta[0] + "T" + model.fechaHasta.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit', second: '2-digit'}) + ".000";
                 var url = Constante.BASE_URL + "/api/v1/camera/" + $stateParams.id + "/video/export?from=" + fechaDesde + "&to=" + fechaHasta;
                 ComunicationService
                         .post(url)
@@ -240,7 +233,6 @@
                                 guid: response.data.exportGUIDs[0]
                             });
                             vm.habilitar.btnExportar = true;
-                            vm.text.btnExportar = 'Exportando';
                             localStorageService.set('guids', vm.guids);
                         });
             }
