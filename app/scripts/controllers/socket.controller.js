@@ -14,7 +14,7 @@
         var canvas = document.getElementById("preview");
         var context = canvas.getContext("2d");
         canvas.width = 800;
-        canvas.height = 600;
+        canvas.height = 450;
         context.width = canvas.width;
         context.height = canvas.height;
 
