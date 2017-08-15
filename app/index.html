@@ -73,104 +73,45 @@
                     </div>                                             
                 </div>
                 <div class="row" style="margin-right: 20px;">
-                    <form name="exportForm" id="export_form">                    
+                    <form name="exportForm" ng-submit="mc.exportVideo(mc.frm, exportForm)" novalidate>                    
                         <div class="row">
-                            <div class="col-lg-4">
+                            <div class="col-lg-6">
                                 <div class="form-group" ng-class="{'has-error': exportForm.fechaDesde.$touched && exportForm.fechaDesde.$invalid}">
                                     <label>Desde</label>
                                     <div class="styled-select">
-                                        <input ng-model="vm.frm.fechaDesde" id="date_format"
-                                               type="date" name="fechaDesde" required
+                                        <input ng-model="mc.frm.fechaDesde" step="1"
+                                               type="datetime-local" name="fechaDesde" required
                                                class="form-control">
                                     </div>
                                     <div ng-messages="exportForm.fechaDesde.$touched && exportForm.fechaDesde.$error" role="alert">
                                         <span style="font-size: 9pt;" class="help-block" ng-message="required">Campo Obligatorio</span>
+                                        <span style="font-size: 9pt;" class="help-block" ng-message="datetime-local">Formato invalidos</span>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-4">
-                                <div class="form-group" ng-class="{'has-error': exportForm.tiempoDesde.$touched && exportForm.tiempoDesde.$invalid}">
-                                    <label>&nbsp;</label>
+                            <div class="col-lg-6">
+                                <div class="form-group" ng-class="{'has-error': exportForm.fechaHasta.$touched && fechaHasta.tiempoDesde.$invalid}">
+                                    <label>Hasta:</label>
                                     <div class="styled-select">
-                                        <input ng-model="vm.frm.tiempoDesde"
-                                               type="time" name="tiempoDesde" required
-                                               class="form-control">
-                                    </div>
-                                    <div ng-messages="exportForm.tiempoDesde.$touched && exportForm.tiempoDesde.$error" role="alert">
-                                        <span style="font-size: 9pt;" class="help-block" ng-message="required">Campo Obligatorio</span>
-                                        <span style="font-size: 9pt;" class="help-block" ng-message="time">Hora/Minuto invalidos</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-4">
-                                <div class="form-group" ng-class="{'has-error': exportForm.segundoDesde.$touched && exportForm.segundoDesde.$invalid}">
-                                    <label>&nbsp;</label>
-                                    <div class="styled-select">
-                                        <input ng-model="vm.frm.segundoDesde"
-                                               min="0" max="59" maxlength="2"
-                                               type="number" name="segundoDesde" required
-                                               class="form-control">
-                                    </div>
-                                    <div ng-messages="exportForm.segundoDesde.$touched && exportForm.segundoDesde.$error" role="alert">
-                                        <span style="font-size: 9pt;" class="help-block" ng-message="required">Campo Obligatorio</span>
-                                        <span style="font-size: 9pt;" class="help-block" ng-message="min">Valor minimo 0</span>
-                                        <span style="font-size: 9pt;" class="help-block" ng-message="max">Valor maximo 59</span>
-                                        <span style="font-size: 9pt;" class="help-block" ng-message="maxlength">Valor maximo 59</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-lg-4">
-                                <div class="form-group" ng-class="{'has-error': exportForm.fechaHasta.$touched && exportForm.fechaHasta.$invalid}">
-                                    <label>Hasta</label>
-                                    <div class="styled-select">
-                                        <input ng-model="vm.frm.fechaHasta" id="date_format"
-                                               type="date" name="fechaHasta" required
+                                        <input ng-model="mc.frm.fechaHasta" step="1"
+                                               type="datetime-local" name="fechaHasta" required
                                                class="form-control">
                                     </div>
                                     <div ng-messages="exportForm.fechaHasta.$touched && exportForm.fechaHasta.$error" role="alert">
                                         <span style="font-size: 9pt;" class="help-block" ng-message="required">Campo Obligatorio</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-4">
-                                <div class="form-group" ng-class="{'has-error': exportForm.tiempoHasta.$touched && exportForm.tiempoHasta.$invalid}">
-                                    <label>&nbsp;</label>
-                                    <div class="styled-select">
-                                        <input ng-model="vm.frm.tiempoHasta"
-                                               type="time" name="tiempoHasta" required
-                                               class="form-control">
-                                    </div>
-                                    <div ng-messages="exportForm.tiempoHasta.$touched && exportForm.tiempoHasta.$error" role="alert">
-                                        <span style="font-size: 9pt;" class="help-block" ng-message="required">Campo Obligatorio</span>
-                                        <span style="font-size: 9pt;" class="help-block" ng-message="time">Hora/Minuto invalidos</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-4">
-                                <div class="form-group" ng-class="{'has-error': exportForm.segundoHasta.$touched && exportForm.segundoHasta.$invalid}">
-                                    <label>&nbsp;</label>
-                                    <div class="styled-select">
-                                        <input ng-model="vm.frm.segundoHasta"
-                                               min="0" max="59" maxlength="2"
-                                               type="number" name="segundoHasta" required
-                                               class="form-control">
-                                    </div>
-                                    <div ng-messages="exportForm.segundoHasta.$touched && exportForm.segundoHasta.$error" role="alert">
-                                        <span style="font-size: 9pt;" class="help-block" ng-message="required">Campo Obligatorio</span>
-                                        <span style="font-size: 9pt;" class="help-block" ng-message="min">Valor minimo 0</span>
-                                        <span style="font-size: 9pt;" class="help-block" ng-message="max">Valor maximo 59</span>
-                                        <span style="font-size: 9pt;" class="help-block" ng-message="maxlength">Valor maximo 59</span>
+                                        <span style="font-size: 9pt;" class="help-block" ng-message="datetime-local">Formato invalidos</span>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="margins" style="text-align: center;">
-                            <button class="btn-success" type="button" onclick="exportVideo()">Exportar</button>
-                            <button class="btn-success" type="button" onclick="exportInfo()">Exp. Info</button>
+                        <div style="text-align: center;">
+                            <button class="btn-sm btn-success" type="submit">Exportar</button>
+                            <button class="btn-sm btn-success" type="button" 
+                                    ng-click="mc.descargarVideo()"
+                                    ng-show="mc.visible.btnDownload"
+                                    ng-disabled="mc.disabled.btnDownload">{{mc.text.btnDownload}}</button>
                         </div>                            
-                    </form> 
+                    </form>
                 </div>
             </div>
         </div>
@@ -182,6 +123,10 @@
         <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
         <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
         <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+        <script src="bower_components/angular-local-storage/dist/angular-local-storage.js"></script>
+        <script src="bower_components/file-saver.js/FileSaver.js"></script>
+        <script src="bower_components/blob-polyfill/Blob.js"></script>
+        <script src="bower_components/angular-file-saver/dist/angular-file-saver.bundle.js"></script>
 
         <script src="socket.io/socket.io.js"></script>
         <script src="scripts/app.main.js"></script>        
