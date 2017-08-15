@@ -11,11 +11,17 @@
         var vm = this;
         /*VARIABLES*/
         vm.frm = {};
-        vm.disabled = {btnDownload: false};
+        vm.habilitar = {
+            btnDownload: false,
+            btnExportar: false
+        };
         vm.cameraMovements = null;
         vm.guids = [];
         vm.visible = {btnDownload: false};
-        vm.text = {btnDownload: 'Descargar'};
+        vm.text = {
+            btnDownload: 'Descargar',
+            btnExportar: 'Exportar'
+        };
         /*FUNCIONES Y/O METODOS*/
         vm.descargarVideo = descargarVideo;
         vm.exportVideo = exportVideo;
@@ -37,6 +43,7 @@
             var control = localStorageService.get('guids');
             if (control) {
                 if (control.length > 0) {
+                    vm.habilitar.btnExportar = true;
                     console.log(control);
                     var url = Constante.BASE_URL + "/api/v1/camera/" + $stateParams.id + "/video/export/" + control[0].guid + "/info";
                     ComunicationService
@@ -45,11 +52,15 @@
                                 console.log(response);
                                 if (response.data.exportStatus.finished) {
                                     vm.visible.btnDownload = true;
-                                    vm.disabled.btnDownload = false;
+                                    vm.habilitar.btnDownload = false;
                                     vm.text.btnDownload = 'Descargar';
                                 }
                             });
+                } else {
+                    vm.habilitar.btnExportar = false;
                 }
+            } else {
+                vm.habilitar.btnExportar = false;
             }
             $timeout(checkForExports, 10000);
         }
@@ -59,7 +70,7 @@
          * @returns {undefined}
          */
         function descargarVideo() {
-            vm.disabled.btnDownload = true;
+            vm.habilitar.btnDownload = true;
             vm.text.btnDownload = 'Descargando';
             var control = localStorageService.get('guids');
             var url = Constante.BASE_URL + "/api/v1/camera/" + $stateParams.id + "/video/export/" + control[0].guid;
@@ -71,6 +82,8 @@
                         control.splice(0, 1);
                         localStorageService.set('guids', control);
                         vm.visible.btnDownload = false;
+                        vm.habilitar.btnExportar = false;
+                        vm.text.btnExportar = 'Exportar';
                     });
         }
 
@@ -226,6 +239,8 @@
                                 to: fechaHasta,
                                 guid: response.data.exportGUIDs[0]
                             });
+                            vm.habilitar.btnExportar = true;
+                            vm.text.btnExportar = 'Exportando';
                             localStorageService.set('guids', vm.guids);
                         });
             }
