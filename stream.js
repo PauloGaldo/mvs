@@ -28,7 +28,7 @@ io.on('connection', function (socket) {
                     ])
                     .outputOptions([
 //                    '-c:v', 'libtheora',
-                        '-q:v', '3',
+                        '-q:v', '10',
                         '-updatefirst', '1',
                         '-f', 'image2',
 //                        '-maxrate', '1000k',
