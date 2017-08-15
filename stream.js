@@ -50,7 +50,7 @@ io.on('connection', function (socket) {
                 socket.emit('data', resp);
             });
         });
-    });
+    });    
 });
 
 
