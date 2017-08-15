@@ -5,9 +5,15 @@
             .module('mvsApp')
             .config(Config);
 
-    Config.$inject = ['$stateProvider', '$locationProvider'];
+    Config.$inject = ['$stateProvider', '$locationProvider', 'localStorageServiceProvider'];
 
-    function Config($stateProvider, $locationProvider) {
+    function Config($stateProvider, $locationProvider, localStorageServiceProvider) {
+
+        localStorageServiceProvider
+                .setPrefix('mvsApp')
+                .setStorageType('sessionStorage')
+                .setNotify(true, true);
+
         $stateProvider
                 .state('flowplayer', {
                     url: '/flowplayer?id',
@@ -25,6 +31,7 @@
                     controller: 'SocketCtrlr as vm'
                 });
 //        $locationProvider.html5Mode(true);
+        
     }
 
 })();

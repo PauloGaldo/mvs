@@ -7,6 +7,8 @@
                 'ngAria',
                 'ngSanitize',
                 'ngMessages',
-                'ui.router'
+                'ui.router',
+                'LocalStorageModule',
+                'ngFileSaver'
             ]);
 })();
