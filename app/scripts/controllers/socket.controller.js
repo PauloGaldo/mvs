@@ -21,9 +21,7 @@
         socket.on('start', function (response) {
             console.log(response);
             socket.emit('streaming', $stateParams.id);
-            var cont = 0;
             socket.on('data', function (response) {
-                console.log(response, cont++);
                 var bytes = new Uint8Array(response);
                 var blob = new Blob([bytes], {type: 'application/octet-binary'});
                 var url = URL.createObjectURL(blob);
