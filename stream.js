@@ -50,7 +50,7 @@ io.on('connection', function (socket) {
                 socket.emit('data', resp);
             });
         });
-    });    
+    });
 });
 
 
@@ -133,11 +133,13 @@ function setCameraUrl(guid, callback) {
         }
     };
     sender.request(options, function (res) {
-        res.setEncoding('utf8');
-        res.on('data', function (chunk) {
-            logger.info("RTSP: ", chunk);
-            return callback(chunk);
-        });
+        if (res.statusCode === 200) {
+            res.setEncoding('utf8');
+            res.on('data', function (chunk) {
+                logger.info("RTSP: ", chunk);
+                return callback(chunk);
+            });
+        }
     }).end();
 }
 
