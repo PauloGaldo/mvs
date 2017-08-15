@@ -17,7 +17,6 @@
         canvas.height = 600;
         context.width = canvas.width;
         context.height = canvas.height;
-        var video = document.getElementById("video");
 
         socket.on('start', function (response) {
             console.log(response);
