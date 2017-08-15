@@ -20,19 +20,19 @@
                             <tr><td colspan="3">&nbsp;{{mc.cameraMovements}}</td></tr>
                             <tr>
                                 <td>
-                                    <button class="btn-sm btn-primary" type="button" ng-click="mc.moveUp()"
+                                    <button class="btn-sm btn-primary btn-size" type="button" ng-click="mc.moveUp()"
                                             data-toggle="tooltip" title="Subir">
                                         <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
                                     </button>                                    
                                 </td>
                                 <td>
-                                    <button class="btn-sm btn-primary" type="button" ng-click="mc.moveDown()"
+                                    <button class="btn-sm btn-primary btn-size" type="button" ng-click="mc.moveDown()"
                                             data-toggle="tooltip" title="Abajo">
                                         <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
                                     </button>
                                 </td>
                                 <td>
-                                    <button class="btn-sm btn-primary" type="button" ng-click="mc.zoomIn()"
+                                    <button class="btn-sm btn-primary btn-size" type="button" ng-click="mc.zoomIn()"
                                             data-toggle="tooltip" title="Acercar">
                                         <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
                                     </button>
@@ -40,19 +40,19 @@
                             </tr>
                             <tr>
                                 <td>
-                                    <button class="btn-sm btn-primary" type="button" ng-click="mc.moveLeft()"
+                                    <button class="btn-sm btn-primary btn-size" type="button" ng-click="mc.moveLeft()"
                                             data-toggle="tooltip" title="Izquierda">
                                         <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>
                                     </button>                                                                   
                                 </td>
                                 <td> 
-                                    <button class="btn-sm btn-primary" type="button" ng-click="mc.moveRight()"
+                                    <button class="btn-sm btn-primary btn-size" type="button" ng-click="mc.moveRight()"
                                             data-toggle="tooltip" title="Derecha">
                                         <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span>
                                     </button>                                    
                                 </td>
                                 <td>
-                                    <button class="btn-sm btn-primary" type="button" ng-click="mc.zoomOut()"
+                                    <button class="btn-sm btn-primary btn-size" type="button" ng-click="mc.zoomOut()"
                                             data-toggle="tooltip" title="Alejar">
                                         <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
                                     </button>                                    
@@ -60,7 +60,7 @@
                             </tr>
                             <tr>
                                 <td colspan="3">
-                                    <button class="btn-sm btn-danger" type="button" ng-click="mc.stop()"
+                                    <button class="btn-sm btn-danger btn-size" type="button" ng-click="mc.stop()"
                                             data-toggle="tooltip" title="Detener">
                                         <span class="glyphicon glyphicon-stop" aria-hidden="true"></span>
                                     </button>                             
@@ -102,11 +102,14 @@
                                     </div>
                                 </div>
                                 <div style="text-align: center;">
-                                    <button class="btn-sm btn-success" type="submit">Exportar</button>
+                                    <button class="btn-sm btn-success btn-size" type="submit"
+                                            ng-class="{'not_allowed': mc.habilitar.btnExportar}"
+                                            ng-disabled="mc.habilitar.btnExportar">{{mc.text.btnExportar}}</button>
                                     <button class="btn-sm btn-success" type="button" 
                                             ng-click="mc.descargarVideo()"
+                                            ng-class="{'not_allowed': mc.habilitar.btnDownload}"
                                             ng-show="mc.visible.btnDownload"
-                                            ng-disabled="mc.disabled.btnDownload">{{mc.text.btnDownload}}</button>
+                                            ng-disabled="mc.habilitar.btnDownload">{{mc.text.btnDownload}}</button>
                                 </div>
                             </form>
                         </div>
@@ -137,9 +140,9 @@
         <script src="scripts/controllers/socket.controller.js"></script>
         <script src="scripts/services/comunication.service.js"></script>
         <script>
-                                                $(document).ready(function () {
-                                                    $('[data-toggle="tooltip"]').tooltip();
-                                                });
+                                            $(document).ready(function () {
+                                                $('[data-toggle="tooltip"]').tooltip();
+                                            });
         </script>
     </body>
 </html>
