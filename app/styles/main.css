@@ -4,7 +4,7 @@
     margin: 0;
 }
 .btn-size{
-    width: 80px;
+    width: 50px;
 }
 td{
     border-top: 0px solid #ddd !important;
@@ -14,4 +14,7 @@ td{
 }
 button[disabled], html input[disabled] {
     cursor: not-allowed !important;
+}
+.ng-scope > canvas {
+    max-width: 100%;
 }

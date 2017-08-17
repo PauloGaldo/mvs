@@ -10,12 +10,10 @@
     </head>
     <body ng-app="mvsApp" ng-cloak>               
         <div class="row">
-            <button ui-sref="flowplayer" style="display: none;">flowvideo</button>
-            <button ui-sref="nativo" style="display: none;">nativo</button>
-            <div class="col-lg-6 col-sm-8 col-md-8" ui-view style="text-align: center;"></div>
-            <div class="col-lg-6 col-sm-12 col-md-12" ng-controller="MainCtrl as mc">
+            <div class="col-lg-8 col-xs-12 col-sm-12 col-md-9 ng-scope" ui-view style="text-align: center;"></div>
+            <div class="col-lg-3 col-xs-12 col-sm-12 col-md-3 ng-scope" ng-controller="MainCtrl as mc">
                 <div class="row">
-                    <div class="col-lg-4 col-lg-offset-2" style="margin-top: 20px; background-color: gainsboro;">                    
+                    <div class="col-lg-10" style="margin-top: 20px; background-color: gainsboro;">                    
                         <table class="table" style="text-align: center;">
                             <tr><td colspan="3">&nbsp;{{mc.cameraMovements}}</td></tr>
                             <tr>
@@ -70,7 +68,7 @@
                     </div>                    
                 </div>
                 <div class="row">
-                    <div class="col-lg-8" style="background-color: gainsboro;">
+                    <div class="col-lg-10" style="background-color: gainsboro;">
                         <div class="row" style="margin-top: 20px;">
                             <form name="exportForm" ng-submit="mc.exportVideo(mc.frm, exportForm)" novalidate>
                                 <div class="col-lg-12">
@@ -102,7 +100,8 @@
                                     </div>
                                 </div>
                                 <div style="text-align: center; margin-bottom: 20px;">
-                                    <button class="btn-sm btn-success btn-size" type="submit"
+                                    <button class="btn-sm btn-success" type="submit"
+                                            style="width: 80px;"
                                             ng-class="{'not_allowed': mc.habilitar.btnExportar}"
                                             ng-show="mc.visible.btnExportar"
                                             ng-disabled="mc.habilitar.btnExportar">{{mc.text.btnExportar}}</button>
@@ -131,8 +130,8 @@
 
         <script src="socket.io/socket.io.js"></script>
         <script src="scripts/app.main.js"></script>        
-        <script src="scripts/app.config.js"></script>
         <script src="scripts/app.constant.js"></script>
+        <script src="scripts/app.config.js"></script>        
         <script src="scripts/controllers/main.controller.js"></script>
         <script src="scripts/controllers/flash.controller.js"></script>
         <script src="scripts/controllers/native.controller.js"></script>
