@@ -7,7 +7,7 @@
 
     Config.$inject = ['$stateProvider', '$locationProvider', 'localStorageServiceProvider'];
 
-    function Config($stateProvider, $locationProvider, localStorageServiceProvider) {
+    function Config($stateProvider, $locationProvider, localStorageServiceProvider) {        
 
         localStorageServiceProvider
                 .setPrefix('mvsApp')
@@ -31,7 +31,7 @@
                     controller: 'SocketCtrlr as vm'
                 });
 //        $locationProvider.html5Mode(true);
-        
+
     }
 
 })();

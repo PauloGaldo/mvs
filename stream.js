@@ -7,6 +7,19 @@ const io = require('socket.io')(http);
 const Log = require('log');
 const logger = new Log('debug');
 const port = process.env.PORT || 80;
+const fs = require('fs');
+const config = {
+    host_stream: process.argv[2],
+    port_stream: process.argv[3],
+    host_modulo: process.argv[4],
+    port_modulo: process.argv[5],
+    token: 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImF1dGgiOiJST0xFX0FETUlOLFJPTEVfTFBSLFJPTEVfUkZJRCxST0xFX1VTRVIsUk9MRV9XIiwiZXhwIjoxNTAyOTk0Mzc5fQ.Sfib0y_blOwt7L-ppeciPGVg_3Jz18HcnG8bfDLDyOYoJ5ycub-JJoMVzjzXlSj5oxgjRz3aa_bjG_vL7EDcBQ'
+};
+fs.writeFile("app/config.json", JSON.stringify(config), function (err) {
+    logger.info('config ' + err);
+});
+
+logger.info(process.argv[2], process.argv[3]);
 
 http.listen(port, function () {
     logger.info('Listening port: ' + port);
@@ -52,7 +65,6 @@ io.on('connection', function (socket) {
         });
     });
 });
-
 
 /**
  * 00000000-0000-0000-0000-00047e02545b
@@ -123,13 +135,13 @@ app.get('/video/html5/:id', function (req, res) {
 function setCameraUrl(guid, callback) {
     var path = '/api/v1/camera/' + guid + '/video/url';
     var options = {
-        hostname: '148.240.92.98',
-        port: 8484,
+        hostname: config.host,
+        port: config.port,
         path: path,
         method: 'GET',
-        auth: 'admin:admin',
         headers: {
-            'Content-Type': 'text/plain;charset=UTF-8'
+            'Content-Type': 'text/plain;charset=UTF-8',
+            'Authorization': config.token
         }
     };
     sender.request(options, function (res) {
@@ -140,41 +152,5 @@ function setCameraUrl(guid, callback) {
                 return callback(chunk);
             });
         }
-    }).end();
-}
-
-function mapperCamera(guid, callback) {
-    var id;
-    switch (guid) {
-        case "00000000-0000-0000-0000-00047e02545b":
-            id = 10;
-            break;
-        case "00000000-0000-0000-0000-00047e025587":
-            id = 14;
-            break;
-        case "00000000-0000-0000-0000-00047e025a48":
-            id = 15;
-            break;
-        default:
-            id = 1;
-            break;
-    }
-    var path = '/api/device-manager/cameras/' + id + '/stream-url';
-    var options = {
-        hostname: '148.240.92.98',
-        port: 8484,
-        path: path,
-        method: 'GET',
-        auth: 'admin:admin',
-        headers: {
-            'Content-Type': 'text/plain;charset=UTF-8'
-        }
-    };
-    sender.request(options, function (res) {
-        res.setEncoding('utf8');
-        res.on('data', function (chunk) {
-            logger.info(chunk);
-            return callback(chunk);
-        });
     }).end();
 }
