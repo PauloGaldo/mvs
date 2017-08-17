@@ -80,14 +80,14 @@ app.get('/video/flash/:id', function (req, res) {
             ffmpeg(url)
                     .preset('flashvideo')
                     .inputOptions([
-                        '-threads', '32',
+//                        '-threads', '32',
                         '-rtsp_transport', 'tcp'
                     ])
                     .outputOptions([
                         /*'-maxrate', '4000k',
                          '-bufsize', '1835k',*/
-                        '-q:v', '10',
-                        '-updatefirst', '1',
+//                        '-q:v', '10',
+//                        '-updatefirst', '1',
                         '-s', '1280x720'
                     ])
                     .on('end', function () {
@@ -121,12 +121,12 @@ app.get('/video/html5/:id', function (req, res) {
                         '-rtsp_transport', 'tcp'
                     ])
                     .outputOptions([
-                        '-c:v', 'libtheora',
+                        '-c:v', 'libtheora'
                         /*'-maxrate', '4000k',
                          '-bufsize', '1835k',*/
-                        '-q:v', '10',
-                        '-updatefirst', '1',
-                        '-s', '1280x720'
+//                        '-q:v', '10',
+//                        '-updatefirst', '1',
+//                        '-s', '1280x720'
                     ])
                     .format('ogg')
                     .on('end', function () {
@@ -155,7 +155,6 @@ function setCameraUrl(guid, callback) {
             'Authorization': config.token
         }
     };
-    logger.info(options);
     sender.request(options, function (res) {
         logger.info(res.statusCode);
         if (res.statusCode === 200) {
