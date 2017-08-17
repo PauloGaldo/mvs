@@ -17,6 +17,7 @@
         };
         vm.cameraMovements = null;
         vm.guids = [];
+        vm.maxDatetimeLocal = new Date();
         vm.visible = {btnDownload: false, btnExportar: true};
         vm.text = {
             btnDownload: 'Descargar',
@@ -91,9 +92,9 @@
                     .post(url, Configuration.token)
                     .then(function (response) {
                         if (response.status === 200) {
-                            vm.cameraMovements = response.data.msg;
+                            vm.cameraMovements = 'Movimiento exitoso';
                         } else {
-                            vm.cameraMovements = 'Error al mover camara';
+                            vm.cameraMovements = 'Error al mover cámara';
                         }
                     });
         }
@@ -109,9 +110,9 @@
                     .post(url, Configuration.token)
                     .then(function (response) {
                         if (response.status === 200) {
-                            vm.cameraMovements = response.data.msg;
+                            vm.cameraMovements = 'Movimiento exitoso';
                         } else {
-                            vm.cameraMovements = 'Error al mover camara';
+                            vm.cameraMovements = 'Error al mover cámara';
                         }
                     });
         }
@@ -127,9 +128,9 @@
                     .post(url, Configuration.token)
                     .then(function (response) {
                         if (response.status === 200) {
-                            vm.cameraMovements = response.data.msg;
+                            vm.cameraMovements = 'Movimiento exitoso';
                         } else {
-                            vm.cameraMovements = 'Error al mover camara';
+                            vm.cameraMovements = 'Error al mover cámara';
                         }
                     });
         }
@@ -145,9 +146,9 @@
                     .post(url, Configuration.token)
                     .then(function (response) {
                         if (response.status === 200) {
-                            vm.cameraMovements = response.data.msg;
+                            vm.cameraMovements = 'Movimiento exitoso';
                         } else {
-                            vm.cameraMovements = 'Error al mover camara';
+                            vm.cameraMovements = 'Error al mover cámara';
                         }
                     });
         }
@@ -163,45 +164,45 @@
                     .post(url, Configuration.token)
                     .then(function (response) {
                         if (response.status === 200) {
-                            vm.cameraMovements = response.data.msg;
+                            vm.cameraMovements = 'Acción exitosa';
                         } else {
-                            vm.cameraMovements = 'Error al mover camara';
+                            vm.cameraMovements = 'Error al mover cámara';
                         }
                     });
         }
 
         /**
-         * Alejar camara
+         * Alejar cámara
          * @returns {undefined}
          */
         function zoomOut() {
             var url = Configuration.BASE_URL + "/api/v1/camera/" + $stateParams.id + "/zoom?action=out";
-            vm.cameraMovements = 'Alejando camara';
+            vm.cameraMovements = 'Alejando cámara';
             ComunicationService
                     .post(url, Configuration.token)
                     .then(function (response) {
                         if (response.status === 200) {
-                            vm.cameraMovements = response.data.msg;
+                            vm.cameraMovements = 'Acción exitosa';
                         } else {
-                            vm.cameraMovements = 'Error al mover camara';
+                            vm.cameraMovements = 'Error al mover cámara';
                         }
                     });
         }
 
         /**
-         * Acercar camara
+         * Acercar cámara
          * @returns {undefined}
          */
         function zoomIn() {
             var url = Configuration.BASE_URL + "/api/v1/camera/" + $stateParams.id + "/zoom?action=in";
-            vm.cameraMovements = 'Acercando camara';
+            vm.cameraMovements = 'Acercando cámara';
             ComunicationService
                     .post(url, Configuration.token)
                     .then(function (response) {
                         if (response.status === 200) {
-                            vm.cameraMovements = response.data.msg;
+                            vm.cameraMovements = 'Acción exitosa';
                         } else {
-                            vm.cameraMovements = 'Error al mover camara';
+                            vm.cameraMovements = 'Error al mover cámara';
                         }
                     });
         }
@@ -219,9 +220,21 @@
             });
             if (form.$valid) {
                 var splitDesde = model.fechaDesde.toISOString().split("T");
-                var fechaDesde = splitDesde[0] + "T" + model.fechaDesde.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit', second: '2-digit'}) + ".000";
+                var fechaDesde = splitDesde[0] + "T";
+                var horaDesde = model.fechaDesde.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit', second: '2-digit'});
+                if (horaDesde.length < 8) {
+                    fechaDesde += '0' + horaDesde + '.000';
+                } else {
+                    fechaDesde += horaDesde + '.000';
+                }
                 var splitHasta = model.fechaHasta.toISOString().split("T");
-                var fechaHasta = splitHasta[0] + "T" + model.fechaHasta.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit', second: '2-digit'}) + ".000";
+                var fechaHasta = splitHasta[0] + "T";
+                var horaHasta = model.fechaHasta.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit', second: '2-digit'});
+                if (horaHasta.length < 8) {
+                    fechaHasta += '0' + horaHasta + '.000';
+                } else {
+                    fechaHasta += horaHasta + '.000';
+                }
                 var url = Configuration.BASE_URL + "/api/v1/camera/" + $stateParams.id + "/video/export?from=" + fechaDesde + "&to=" + fechaHasta;
                 ComunicationService
                         .post(url, Configuration.token)
