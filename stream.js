@@ -29,13 +29,14 @@ app.use(express.static(__dirname + '/app'));
 app.use('/bower_components', express.static(__dirname + '/bower_components'));
 
 io.on('connection', function (socket) {
+    var stream = null;
     logger.info('connected to socket');
     socket.emit('start', 'connected to socket');
     socket.on('streaming', function (guid) {
         logger.info(guid);
         setCameraUrl(guid, function (url) {
             if (url) {
-                var stream = ffmpeg(url)
+                stream = ffmpeg(url)
                         .inputOptions([
                             '-threads', '32',
                             '-rtsp_transport', 'tcp',
@@ -63,6 +64,12 @@ io.on('connection', function (socket) {
             }
         });
     });
+    socket.on('disconnect', function () {
+        setTimeout(function () {
+            logger.info('socket disconnected');
+            stream.kill();
+        }, 10000);
+    });
 });
 
 /**
@@ -80,14 +87,13 @@ app.get('/video/flash/:id', function (req, res) {
             ffmpeg(url)
                     .preset('flashvideo')
                     .inputOptions([
-//                        '-threads', '32',
                         '-rtsp_transport', 'tcp'
                     ])
                     .outputOptions([
                         /*'-maxrate', '4000k',
                          '-bufsize', '1835k',*/
-//                        '-q:v', '10',
-//                        '-updatefirst', '1',
+                        '-q:v', '10',
+                        '-updatefirst', '1',
                         '-s', '1280x720'
                     ])
                     .on('end', function () {
@@ -117,16 +123,15 @@ app.get('/video/html5/:id', function (req, res) {
         if (url) {
             ffmpeg(url)
                     .inputOptions([
-                        '-threads', '32',
                         '-rtsp_transport', 'tcp'
                     ])
                     .outputOptions([
-                        '-c:v', 'libtheora'
+                        '-c:v', 'libtheora',
                         /*'-maxrate', '4000k',
                          '-bufsize', '1835k',*/
-//                        '-q:v', '10',
-//                        '-updatefirst', '1',
-//                        '-s', '1280x720'
+                        '-q:v', '10',
+                        '-updatefirst', '1',
+                        '-s', '1280x720'
                     ])
                     .format('ogg')
                     .on('end', function () {
