@@ -10,111 +10,8 @@
     </head>
     <body ng-app="mvsApp" ng-cloak>               
         <div class="row">
-            <button ui-sref="flowplayer" style="display: none;">flowvideo</button>
-            <button ui-sref="nativo" style="display: none;">nativo</button>
-            <div class="col-lg-6 col-sm-8 col-md-8" ui-view style="text-align: center;"></div>
-            <div class="col-lg-6 col-sm-12 col-md-12" ng-controller="MainCtrl as mc">
-                <div class="row">
-                    <div class="col-lg-4 col-lg-offset-2" style="margin-top: 20px; background-color: gainsboro;">                    
-                        <table class="table" style="text-align: center;">
-                            <tr><td colspan="3">&nbsp;{{mc.cameraMovements}}</td></tr>
-                            <tr>
-                                <td>
-                                    <button class="btn-sm btn-primary btn-size" type="button" ng-click="mc.moveUp()"
-                                            data-toggle="tooltip" title="Subir">
-                                        <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
-                                    </button>                                    
-                                </td>
-                                <td>
-                                    <button class="btn-sm btn-primary btn-size" type="button" ng-click="mc.moveDown()"
-                                            data-toggle="tooltip" title="Abajo">
-                                        <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
-                                    </button>
-                                </td>
-                                <td>
-                                    <button class="btn-sm btn-primary btn-size" type="button" ng-click="mc.zoomIn()"
-                                            data-toggle="tooltip" title="Acercar">
-                                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <button class="btn-sm btn-primary btn-size" type="button" ng-click="mc.moveLeft()"
-                                            data-toggle="tooltip" title="Izquierda">
-                                        <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>
-                                    </button>                                                                   
-                                </td>
-                                <td> 
-                                    <button class="btn-sm btn-primary btn-size" type="button" ng-click="mc.moveRight()"
-                                            data-toggle="tooltip" title="Derecha">
-                                        <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span>
-                                    </button>                                    
-                                </td>
-                                <td>
-                                    <button class="btn-sm btn-primary btn-size" type="button" ng-click="mc.zoomOut()"
-                                            data-toggle="tooltip" title="Alejar">
-                                        <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
-                                    </button>                                    
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="3">
-                                    <button class="btn-sm btn-danger btn-size" type="button" ng-click="mc.stop()"
-                                            data-toggle="tooltip" title="Detener">
-                                        <span class="glyphicon glyphicon-stop" aria-hidden="true"></span>
-                                    </button>                             
-                                </td>
-                            </tr>
-                        </table>                                                                
-                    </div>                    
-                </div>
-                <div class="row">
-                    <div class="col-lg-8" style="background-color: gainsboro;">
-                        <div class="row" style="margin-top: 20px;">
-                            <form name="exportForm" ng-submit="mc.exportVideo(mc.frm, exportForm)" novalidate>
-                                <div class="col-lg-12">
-                                    <div class="form-group" ng-class="{'has-error': exportForm.fechaDesde.$touched && exportForm.fechaDesde.$invalid}">
-                                        <label>Desde</label>
-                                        <div class="styled-select">
-                                            <input ng-model="mc.frm.fechaDesde" step="1"
-                                                   type="datetime-local" name="fechaDesde" required
-                                                   class="form-control">
-                                        </div>
-                                        <div ng-messages="exportForm.fechaDesde.$touched && exportForm.fechaDesde.$error" role="alert">
-                                            <span style="font-size: 9pt;" class="help-block" ng-message="required">Campo Obligatorio</span>
-                                            <span style="font-size: 9pt;" class="help-block" ng-message="datetime-local">Formato invalidos</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-12">
-                                    <div class="form-group" ng-class="{'has-error': exportForm.fechaHasta.$touched && exportForm.fechaHasta.$invalid}">
-                                        <label>Hasta:</label>
-                                        <div class="styled-select">
-                                            <input ng-model="mc.frm.fechaHasta" step="1"
-                                                   type="datetime-local" name="fechaHasta" required
-                                                   class="form-control">
-                                        </div>
-                                        <div ng-messages="exportForm.fechaHasta.$touched && exportForm.fechaHasta.$error" role="alert">
-                                            <span style="font-size: 9pt;" class="help-block" ng-message="required">Campo Obligatorio</span>
-                                            <span style="font-size: 9pt;" class="help-block" ng-message="datetime-local">Formato invalidos</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div style="text-align: center; margin-bottom: 20px;">
-                                    <button class="btn-sm btn-success btn-size" type="submit"
-                                            ng-class="{'not_allowed': mc.habilitar.btnExportar}"
-                                            ng-show="mc.visible.btnExportar"
-                                            ng-disabled="mc.habilitar.btnExportar">{{mc.text.btnExportar}}</button>
-                                    <a href="{{mc.text.url}}" download="{{mc.text.descargar}}"
-                                       ng-show="mc.visible.btnDownload"
-                                       ng-click="mc.descargarVideo()">{{mc.text.btnDownload}}</a>                                    
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <div class="col-lg-8 col-xs-12 col-sm-12 col-md-9 ng-scope" ui-view="video" style="text-align: center;"></div>
+            <div class="col-lg-3 col-xs-12 col-sm-12 col-md-3 ng-scope" ui-view="controls"></div>
         </div>
         <script src="bower_components/jquery/dist/jquery.js"></script>
         <script src="bower_components/angular/angular.js"></script>
@@ -130,9 +27,8 @@
         <script src="bower_components/angular-file-saver/dist/angular-file-saver.bundle.js"></script>
 
         <script src="socket.io/socket.io.js"></script>
-        <script src="scripts/app.main.js"></script>        
-        <script src="scripts/app.config.js"></script>
-        <script src="scripts/app.constant.js"></script>
+        <script src="scripts/app.main.js"></script>    
+        <script src="scripts/app.config.js"></script>        
         <script src="scripts/controllers/main.controller.js"></script>
         <script src="scripts/controllers/flash.controller.js"></script>
         <script src="scripts/controllers/native.controller.js"></script>

@@ -5,9 +5,9 @@
             .module('mvsApp')
             .controller('MainCtrl', MainCtrl);
 
-    MainCtrl.$inject = ['$stateParams', 'Constante', 'ComunicationService', 'localStorageService', '$timeout', 'Blob', 'FileSaver'];
+    MainCtrl.$inject = ['$stateParams', 'Configuration', 'ComunicationService', 'localStorageService', '$timeout'];
 
-    function MainCtrl($stateParams, Constante, ComunicationService, localStorageService, $timeout, Blob, FileSaver) {
+    function MainCtrl($stateParams, Configuration, ComunicationService, localStorageService, $timeout) {
         var vm = this;
         /*VARIABLES*/
         vm.frm = {};
@@ -45,13 +45,13 @@
                 if (control.length > 0) {
                     vm.habilitar.btnExportar = true;
                     console.log(control);
-                    var url = Constante.BASE_URL + "/api/v1/camera/" + $stateParams.id + "/video/export/" + control[0].guid + "/info";
+                    var url = Configuration.BASE_URL + "/api/v1/camera/" + $stateParams.id + "/video/export/" + control[0].guid + "/info";
                     ComunicationService
-                            .get(url)
+                            .get(url, Configuration.token)
                             .then(function (response) {
                                 console.log(response);
                                 if (response.data.exportStatus.finished) {
-                                    vm.text.url = Constante.BASE_URL + "/api/v1/camera/" + $stateParams.id + "/video/export/" + control[0].guid;
+                                    vm.text.url = Configuration.BASE_URL + "/api/v1/camera/" + $stateParams.id + "/video/export/" + control[0].guid;
                                     vm.text.descargar = 'export_from' + control[0].from + '_to' + control[0].to + '.mp4';
                                     vm.visible.btnDownload = true;
                                     vm.visible.btnExportar = false;
@@ -85,10 +85,10 @@
          * @returns {undefined}
          */
         function moveRight() {
-            var url = Constante.BASE_URL + "/api/v1/camera/" + $stateParams.id + "/move?action=right";
+            var url = Configuration.BASE_URL + "/api/v1/camera/" + $stateParams.id + "/move?action=right";
             vm.cameraMovements = 'Moviendo a la derecha';
             ComunicationService
-                    .post(url)
+                    .post(url, Configuration.token)
                     .then(function (response) {
                         if (response.status === 200) {
                             vm.cameraMovements = response.data.msg;
@@ -103,10 +103,10 @@
          * @returns {undefined}
          */
         function moveLeft() {
-            var url = Constante.BASE_URL + "/api/v1/camera/" + $stateParams.id + "/move?action=left";
+            var url = Configuration.BASE_URL + "/api/v1/camera/" + $stateParams.id + "/move?action=left";
             vm.cameraMovements = 'Moviendo a la izquierda';
             ComunicationService
-                    .post(url)
+                    .post(url, Configuration.token)
                     .then(function (response) {
                         if (response.status === 200) {
                             vm.cameraMovements = response.data.msg;
@@ -121,10 +121,10 @@
          * @returns {undefined}
          */
         function moveUp() {
-            var url = Constante.BASE_URL + "/api/v1/camera/" + $stateParams.id + "/move?action=up";
+            var url = Configuration.BASE_URL + "/api/v1/camera/" + $stateParams.id + "/move?action=up";
             vm.cameraMovements = 'Moviendo arriba';
             ComunicationService
-                    .post(url)
+                    .post(url, Configuration.token)
                     .then(function (response) {
                         if (response.status === 200) {
                             vm.cameraMovements = response.data.msg;
@@ -139,10 +139,10 @@
          * @returns {undefined}
          */
         function moveDown() {
-            var url = Constante.BASE_URL + "/api/v1/camera/" + $stateParams.id + "/move?action=down";
+            var url = Configuration.BASE_URL + "/api/v1/camera/" + $stateParams.id + "/move?action=down";
             vm.cameraMovements = 'Moviendo abajo';
             ComunicationService
-                    .post(url)
+                    .post(url, Configuration.token)
                     .then(function (response) {
                         if (response.status === 200) {
                             vm.cameraMovements = response.data.msg;
@@ -157,10 +157,10 @@
          * @returns {undefined}
          */
         function stop() {
-            var url = Constante.BASE_URL + "/api/v1/camera/" + $stateParams.id + "/move?action=stop";
+            var url = Configuration.BASE_URL + "/api/v1/camera/" + $stateParams.id + "/move?action=stop";
             vm.cameraMovements = 'Deteniendo movimiento';
             ComunicationService
-                    .post(url)
+                    .post(url, Configuration.token)
                     .then(function (response) {
                         if (response.status === 200) {
                             vm.cameraMovements = response.data.msg;
@@ -175,10 +175,10 @@
          * @returns {undefined}
          */
         function zoomOut() {
-            var url = Constante.BASE_URL + "/api/v1/camera/" + $stateParams.id + "/zoom?action=out";
+            var url = Configuration.BASE_URL + "/api/v1/camera/" + $stateParams.id + "/zoom?action=out";
             vm.cameraMovements = 'Alejando camara';
             ComunicationService
-                    .post(url)
+                    .post(url, Configuration.token)
                     .then(function (response) {
                         if (response.status === 200) {
                             vm.cameraMovements = response.data.msg;
@@ -193,10 +193,10 @@
          * @returns {undefined}
          */
         function zoomIn() {
-            var url = Constante.BASE_URL + "/api/v1/camera/" + $stateParams.id + "/zoom?action=in";
+            var url = Configuration.BASE_URL + "/api/v1/camera/" + $stateParams.id + "/zoom?action=in";
             vm.cameraMovements = 'Acercando camara';
             ComunicationService
-                    .post(url)
+                    .post(url, Configuration.token)
                     .then(function (response) {
                         if (response.status === 200) {
                             vm.cameraMovements = response.data.msg;
@@ -222,9 +222,9 @@
                 var fechaDesde = splitDesde[0] + "T" + model.fechaDesde.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit', second: '2-digit'}) + ".000";
                 var splitHasta = model.fechaHasta.toISOString().split("T");
                 var fechaHasta = splitHasta[0] + "T" + model.fechaHasta.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit', second: '2-digit'}) + ".000";
-                var url = Constante.BASE_URL + "/api/v1/camera/" + $stateParams.id + "/video/export?from=" + fechaDesde + "&to=" + fechaHasta;
+                var url = Configuration.BASE_URL + "/api/v1/camera/" + $stateParams.id + "/video/export?from=" + fechaDesde + "&to=" + fechaHasta;
                 ComunicationService
-                        .post(url)
+                        .post(url, Configuration.token)
                         .then(function (response) {
                             console.log(response);
                             vm.guids.push({
