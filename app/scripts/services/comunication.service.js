@@ -5,17 +5,17 @@
             .module('mvsApp')
             .service('ComunicationService', ComunicationService);
 
-    ComunicationService.$inject = ['$http', '$q', 'Constante'];
+    ComunicationService.$inject = ['$http', '$q'];
 
-    function ComunicationService($http, $q, Constante) {
+    function ComunicationService($http, $q) {
 
-        this.post = function (url) {
+        this.post = function (url, token) {
             var deferred = $q.defer();
             $http({
                 url: url,
                 method: 'POST',
                 headers: {
-                    Authorization: Constante.JWT
+                    Authorization: token
                 }
             }).then(function successCallback(response) {
                 deferred.resolve(response);
@@ -25,13 +25,13 @@
             return deferred.promise;
         };
 
-        this.get = function (url) {
+        this.get = function (url, token) {
             var deferred = $q.defer();
             $http({
                 url: url,
                 method: 'GET',
                 headers: {
-                    Authorization: Constante.JWT
+                    Authorization: token
                 }
             }).then(function successCallback(response) {
                 deferred.resolve(response);
@@ -41,14 +41,14 @@
             return deferred.promise;
         };
 
-        this.download = function (url) {
+        this.download = function (url, token) {
             var deferred = $q.defer();
             $http({
                 url: url,
                 method: 'GET',
                 responseType: "blob",
                 headers: {
-                    Authorization: Constante.JWT
+                    Authorization: token
                 }
             }).then(function successCallback(response) {
                 deferred.resolve(response);
