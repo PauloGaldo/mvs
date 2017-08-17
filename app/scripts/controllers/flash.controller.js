@@ -5,12 +5,12 @@
             .module('mvsApp')
             .controller('FlashCtrl', FlashCtrl);
 
-    FlashCtrl.$inject = ['$stateParams', 'Constante'];
+    FlashCtrl.$inject = ['$stateParams', 'Configuration'];
 
-    function FlashCtrl($stateParams, Constante) {
+    function FlashCtrl($stateParams, Configuration) {
         var vm = this;
 
-        $f().play([{url: Constante.CAM_URL + '/video/flash/' + $stateParams.id}]);
+        $f().play([{url: Configuration.CAM_URL + '/video/flash/' + $stateParams.id}]);
     }
 
 })();
