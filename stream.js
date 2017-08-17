@@ -13,7 +13,7 @@ const config = {
     port_stream: process.argv[3],
     host_modulo: process.argv[4],
     port_modulo: process.argv[5],
-    token: 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImF1dGgiOiJST0xFX0FETUlOLFJPTEVfTFBSLFJPTEVfUkZJRCxST0xFX1VTRVIsUk9MRV9XIiwiZXhwIjoxNTAyOTk0Mzc5fQ.Sfib0y_blOwt7L-ppeciPGVg_3Jz18HcnG8bfDLDyOYoJ5ycub-JJoMVzjzXlSj5oxgjRz3aa_bjG_vL7EDcBQ'
+    token: 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImF1dGgiOiJST0xFX0FETUlOLFJPTEVfVVNFUiIsImV4cCI6MTUwMzA3MTc1Mn0.fnYfLYVPrctWHyfkeDm_7D0t70YMyfRE6eYQGGUvjCwfmLgrTENaWv19AhxevqC3ykvCvstJ_Ns2pWgzJUyCvw'
 };
 fs.writeFile("app/config.json", JSON.stringify(config), function (err) {
     logger.info('config ' + err);
@@ -135,8 +135,8 @@ app.get('/video/html5/:id', function (req, res) {
 function setCameraUrl(guid, callback) {
     var path = '/api/v1/camera/' + guid + '/video/url';
     var options = {
-        hostname: config.host,
-        port: config.port,
+        hostname: config.host_modulo,
+        port: config.port_modulo,
         path: path,
         method: 'GET',
         headers: {
@@ -144,7 +144,9 @@ function setCameraUrl(guid, callback) {
             'Authorization': config.token
         }
     };
+    logger.info(options);
     sender.request(options, function (res) {
+        logger.info(res.statusCode);
         if (res.statusCode === 200) {
             res.setEncoding('utf8');
             res.on('data', function (chunk) {
