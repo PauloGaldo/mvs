@@ -67,7 +67,9 @@ io.on('connection', function (socket) {
     socket.on('disconnect', function () {
         setTimeout(function () {
             logger.info('socket disconnected');
-            stream.kill();
+            if (stream) {
+                stream.kill();
+            }
         }, 10000);
     });
 });
