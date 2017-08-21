@@ -20,44 +20,56 @@
         var video = document.getElementById("video");
         video.src = window.URL.createObjectURL(ms);
 
-        /**
-         * Evento de carga de pantalla
-         * @param {type} event 
-         */
-        $scope.$on('$viewContentLoaded', function (event) {
-            formLoad();
+        socket.on('start', function (response) {
+            console.log(response);
+            socket.emit('streaming', $stateParams.id);
+            ms.addEventListener('sourceopen', videoLoad, false);
+            ms.addEventListener('sourceclose', videoClosed, false);
+            ms.addEventListener('sourceopen', function (e) {
+                console.log('sourceopen: ' + ms.readyState);
+            });
+            ms.addEventListener('sourceended', function (e) {
+                console.log('sourceended: ' + ms.readyState);
+            });
+            ms.addEventListener('sourceclose', function (e) {
+                console.log('sourceclose: ' + ms.readyState);
+            });
+            ms.addEventListener('error', function (e) {
+                console.log('error: ' + ms.readyState);
+            });
+
         });
 
-        function formLoad() {
-            socket.on('start', function (response) {
-                console.log(response);
-                socket.emit('streaming', $stateParams.id);
-                ms.addEventListener('sourceopen', videoLoad, false);
-                ms.addEventListener('sourceclose', videoClosed, false);
-            });
-        }
 
         function videoLoad() {
-            var inicialized = false;
             sourceBuffer = ms.addSourceBuffer('video/webm; codecs="vorbis,vp8"');
-            socket.on('data', function (response) {
-                var bytes = new Uint8Array(response);
-                console.log(sourceBuffer.updating);
-                if (!inicialized) {
-                    inicialized = true;
-                    sourceBuffer.appendBuffer(bytes);
-                    sourceBuffer.addEventListener('updateend', loadSegment, false);
+            sourceBuffer.addEventListener('updatestart', function (e) {
+//                console.log('updatestart: ' + ms.readyState);
+            });
+            sourceBuffer.addEventListener('updateend', function (e) {
+//                console.log('updateend: ' + ms.readyState);
+            });
+            sourceBuffer.addEventListener('error', function (e) {
+//                console.log('error: ' + ms.readyState);
+            });
+            sourceBuffer.addEventListener('abort', function (e) {
+//                console.log('abort: ' + ms.readyState);
+            });
+            sourceBuffer.addEventListener('update', function () {
+                if (queue.length > 0 && !sourceBuffer.updating) {
+                    console.log(queue.length);
+                    sourceBuffer.appendBuffer(queue.shift());
                 }
             });
-        }
 
-        function loadSegment() {
             socket.on('data', function (response) {
                 var bytes = new Uint8Array(response);
-                if (!sourceBuffer.updating) {
-                    sourceBuffer.appendBuffer(bytes);
-                } else {
+                var blob = new Blob(bytes);
+                console.log(blob.size);
+                if (sourceBuffer.updating || queue.length > 0) {
                     queue.push(bytes);
+                } else {
+                    sourceBuffer.appendBuffer(bytes);
                 }
             });
         }

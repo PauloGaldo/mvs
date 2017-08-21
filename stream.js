@@ -13,7 +13,7 @@ const config = {
     port_stream: process.argv[3],
     host_modulo: process.argv[4],
     port_modulo: process.argv[5],
-    token: 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImF1dGgiOiJST0xFX0FETUlOLFJPTEVfVVNFUiIsImV4cCI6MTUwMzMzNjAwMH0.OHVB01F8LcU8i3l0OtXgZp0nZ9Z9l_lpUKo2BxHi9TcFGGqf_PwmbpXv2Ead4guTiDT3O-Jcy9BL2teT40shEA'
+    token: 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImF1dGgiOiJST0xFX0FETUlOLFJPTEVfVVNFUiIsImV4cCI6MTUwMzM2NTg0NH0.v1Ncs_hXeFVfZVzjAOqQWEXiv5Oggogx_1nss7f2ZCG774HS72ThzA_fbRZ_G2K6Sy3cJndUlgC346CbwWCmDQ'
 };
 fs.writeFile("app/config.json", JSON.stringify(config), function (err) {
     logger.info('config ' + err);
@@ -45,10 +45,12 @@ io.on('connection', function (socket) {
                         .outputOptions([
                             '-q:v', '10',
                             '-updatefirst', '1',
+                            '-maxrate', '24000k',
+                            '-bufsize', '23835k',
 //                            '-f', 'image2',
 //                            '-s', '1280x720',
                             '-f', 'webm',
-                            '-s', '1280x720',
+                            '-s', '320x240',
                             '-vcodec', 'libvpx',
                             '-acodec', 'libvorbis'
                         ])
@@ -68,14 +70,14 @@ io.on('connection', function (socket) {
             }
         });
     });
-    socket.on('disconnect', function () {
-        setTimeout(function () {
-            logger.info('socket disconnected');
-            if (stream) {
-                stream.kill();
-            }
-        }, 10000);
-    });
+//    socket.on('disconnect', function () {
+//        setTimeout(function () {
+//            logger.info('socket disconnected');
+//            if (stream) {
+////                stream.kill();
+//            }
+//        }, 10000);
+//    });
 });
 
 /**
