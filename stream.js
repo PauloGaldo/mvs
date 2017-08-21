@@ -13,7 +13,7 @@ const config = {
     port_stream: process.argv[3],
     host_modulo: process.argv[4],
     port_modulo: process.argv[5],
-    token: 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImF1dGgiOiJST0xFX0FETUlOLFJPTEVfVVNFUiIsImV4cCI6MTUwMzA3MTc1Mn0.fnYfLYVPrctWHyfkeDm_7D0t70YMyfRE6eYQGGUvjCwfmLgrTENaWv19AhxevqC3ykvCvstJ_Ns2pWgzJUyCvw'
+    token: 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImF1dGgiOiJST0xFX0FETUlOLFJPTEVfVVNFUiIsImV4cCI6MTUwMzMzNjAwMH0.OHVB01F8LcU8i3l0OtXgZp0nZ9Z9l_lpUKo2BxHi9TcFGGqf_PwmbpXv2Ead4guTiDT3O-Jcy9BL2teT40shEA'
 };
 fs.writeFile("app/config.json", JSON.stringify(config), function (err) {
     logger.info('config ' + err);
@@ -38,15 +38,19 @@ io.on('connection', function (socket) {
             if (url) {
                 stream = ffmpeg(url)
                         .inputOptions([
-                            '-threads', '32',
-                            '-rtsp_transport', 'tcp',
-                            '-r', '10'
+//                            '-threads', '32',
+                            '-rtsp_transport', 'tcp'
+//                            '-r', '10'
                         ])
                         .outputOptions([
                             '-q:v', '10',
                             '-updatefirst', '1',
-                            '-f', 'image2',
-                            '-s', '1280x720'
+//                            '-f', 'image2',
+//                            '-s', '1280x720',
+                            '-f', 'webm',
+                            '-s', '1280x720',
+                            '-vcodec', 'libvpx',
+                            '-acodec', 'libvorbis'
                         ])
                         .on('end', function () {
                             logger.info('Stream has ended');
