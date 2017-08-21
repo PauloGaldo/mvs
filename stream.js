@@ -6,7 +6,6 @@ const sender = require('http');
 const io = require('socket.io')(http);
 const Log = require('log');
 const logger = new Log('debug');
-const port = process.env.PORT || 80;
 const fs = require('fs');
 const config = {
     host_stream: process.argv[2],
@@ -21,8 +20,8 @@ fs.writeFile("app/config.json", JSON.stringify(config), function (err) {
 
 logger.info(process.argv[2], process.argv[3]);
 
-http.listen(port, function () {
-    logger.info('Listening port: ' + port);
+http.listen(config.port_stream, function () {
+    logger.info('Listening port: ' + config.port_stream);
 });
 
 app.use(express.static(__dirname + '/app'));
@@ -38,7 +37,7 @@ io.on('connection', function (socket) {
             if (url) {
                 stream = ffmpeg(url)
                         .inputOptions([
-                            '-threads', '32',
+                            /*-threads', '32',*/
                             '-rtsp_transport', 'tcp',
                             '-r', '10'
                         ])
