@@ -33,11 +33,6 @@
 
         function createPlayer(rtsp) {
             var playerId = 'vxg_media_player';
-            var div = document.createElement('div');
-            div.setAttribute("id", playerId);
-            div.setAttribute("class", "vxgplayer");
-            var runtimePlayers = document.getElementById('dynamicallyPlayers');
-            runtimePlayers.appendChild(div);
             vxgplayer(playerId, {
                 url: '',
                 nmf_path: 'media_player.nmf',
@@ -54,7 +49,6 @@
                 vxgplayer(playerId).src(rtsp);
                 vxgplayer(playerId).play();
             });
-
         }
 
 
