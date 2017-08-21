@@ -73,6 +73,20 @@
                             controller: 'MainCtrl as vm'
                         }
                     }
+                })
+                .state('extension', {
+                    url: '/extension?id',
+                    resolve: {Configuration: Configuration},
+                    views: {
+                        'video': {
+                            templateUrl: "views/extension.html",
+                            controller: "ExtensionCtrlr as vm"
+                        },
+                        'controls': {
+                            templateUrl: "views/main.html",
+                            controller: 'MainCtrl as vm'
+                        }
+                    }
                 });
 //        $locationProvider.html5Mode(true);
 
