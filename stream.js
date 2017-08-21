@@ -13,7 +13,7 @@ const config = {
     port_stream: process.argv[3],
     host_modulo: process.argv[4],
     port_modulo: process.argv[5],
-    token: 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImF1dGgiOiJST0xFX0FETUlOLFJPTEVfVVNFUiIsImV4cCI6MTUwMzA3MTc1Mn0.fnYfLYVPrctWHyfkeDm_7D0t70YMyfRE6eYQGGUvjCwfmLgrTENaWv19AhxevqC3ykvCvstJ_Ns2pWgzJUyCvw'
+    token: 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImF1dGgiOiJST0xFX1VTRVIsUk9MRV9BRE1JTixST0xFX1ciLCJleHAiOjE1MTEzOTUxOTl9.axRoYHLbtYJuJvAG8DOOU09y2r-Y-cVW7QuEgPVPXgCzD5CJAJz8CwjWTUlhE7GDxgVEuIlnh0sx-qKInwo6Qw'
 };
 fs.writeFile("app/config.json", JSON.stringify(config), function (err) {
     logger.info('config ' + err);
@@ -62,6 +62,11 @@ io.on('connection', function (socket) {
                     socket.emit('data', resp);
                 });
             }
+        });
+    });
+    socket.on('rtsp_request', function (guid) {
+        setCameraUrl(guid, function (url) {
+            socket.emit('rtsp_response', url);
         });
     });
     socket.on('disconnect', function () {
