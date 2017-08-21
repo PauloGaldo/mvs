@@ -7,6 +7,7 @@
         <meta name="viewport" content="width=device-width">
         <link href="styles/main.css" rel="stylesheet" type="text/css"/>
         <link href="bower_components/bootstrap/dist/css/bootstrap.css" rel="stylesheet" type="text/css"/>
+        <link href="pnacl/vxgplayer-1.8.31.min.css" rel="stylesheet" type="text/css"/>
     </head>
     <body ng-app="mvsApp" ng-cloak>               
         <div class="row">
@@ -27,12 +28,14 @@
         <script src="bower_components/angular-file-saver/dist/angular-file-saver.bundle.js"></script>
 
         <script src="socket.io/socket.io.js"></script>
+        <script src="pnacl/vxgplayer-1.8.31.js" type="text/javascript"></script>
         <script src="scripts/app.main.js"></script>    
         <script src="scripts/app.config.js"></script>        
         <script src="scripts/controllers/main.controller.js"></script>
         <script src="scripts/controllers/flash.controller.js"></script>
         <script src="scripts/controllers/native.controller.js"></script>
         <script src="scripts/controllers/socket.controller.js"></script>
+        <script src="scripts/controllers/extension.controller.js"></script>
         <script src="scripts/services/comunication.service.js"></script>
         <script>
                                            $(document).ready(function () {
