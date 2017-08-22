@@ -18,6 +18,10 @@ fs.writeFile("app/config.json", JSON.stringify(config), function (err) {
     logger.info('config ' + err);
 });
 
+process.on('uncaughtException', function (err) {
+    logger.error(err);
+}); 
+
 logger.info(process.argv[2], process.argv[3]);
 
 http.listen(config.port_stream, function () {
