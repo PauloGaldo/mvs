@@ -12,7 +12,7 @@ const config = {
     port_stream: process.argv[3],
     host_modulo: process.argv[4],
     port_modulo: process.argv[5],
-    token: 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImF1dGgiOiJST0xFX1VTRVIsUk9MRV9BRE1JTixST0xFX1ciLCJleHAiOjE1MTEzOTUxOTl9.axRoYHLbtYJuJvAG8DOOU09y2r-Y-cVW7QuEgPVPXgCzD5CJAJz8CwjWTUlhE7GDxgVEuIlnh0sx-qKInwo6Qw'
+    token: 'Bearer x'
 };
 fs.writeFile("app/config.json", JSON.stringify(config), function (err) {
     logger.info('config ' + err);
