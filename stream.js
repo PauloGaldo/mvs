@@ -38,13 +38,12 @@ io.on('connection', function (socket) {
                 stream = ffmpeg(url)
                         .inputOptions([
                             /*-threads', '32',*/
-                            '-rtsp_transport', 'tcp',
-                            '-r', '10'
+                            '-rtsp_transport', 'tcp'
                         ])
                         .outputOptions([
-                            '-q:v', '10',
-                            '-updatefirst', '1',
-                            '-f', 'image2',
+                            '-preset', 'fast',
+                            '-f', 'mjpeg',
+                            '-q:v', '4',
                             '-s', '1280x720'
                         ])
                         .on('end', function () {
@@ -58,7 +57,8 @@ io.on('connection', function (socket) {
                         });
                 var ffstream = stream.pipe();
                 ffstream.on('data', function (resp) {
-                    socket.emit('data', resp);
+                    var frame = new Buffer(resp).toString('base64');
+                    socket.emit('data', frame);
                 });
             }
         });
@@ -69,12 +69,10 @@ io.on('connection', function (socket) {
         });
     });
     socket.on('disconnect', function () {
-        setTimeout(function () {
-            logger.info('socket disconnected');
-            if (stream) {
-                stream.kill();
-            }
-        }, 10000);
+        logger.info('socket disconnected');
+        if (stream) {
+            stream.kill();
+        }
     });
 });
 
