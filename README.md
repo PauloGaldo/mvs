@@ -1,6 +1,6 @@
-#Streamer v 1.0
+# Streamer v 1.0
 
-##Changelog 
+## Changelog 
 
 ### 24/08/2017 v 1.0
 
