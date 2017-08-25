@@ -5,16 +5,16 @@
             .module('mvsApp')
             .config(Config);
 
-    Config.$inject = ['$stateProvider', '$locationProvider', 'localStorageServiceProvider'];
+    Config.$inject = ['$stateProvider', 'localStorageServiceProvider'];
 
-    function Config($stateProvider, $locationProvider, localStorageServiceProvider) {
+    function Config($stateProvider, localStorageServiceProvider) {
 
         localStorageServiceProvider
                 .setPrefix('mvsApp')
                 .setStorageType('sessionStorage')
                 .setNotify(true, true);
 
-        function Configuration($state, $http, $q) {
+        function Configuration($http, $q) {
             var deferred = $q.defer();
             $http({
                 url: 'config.json',
@@ -26,7 +26,6 @@
                 deferred.resolve(response.data);
             }, function errorCallback(response) {
                 console.log(response);
-                $state.go({reload: true});
             });
             return deferred.promise;
         }
@@ -88,7 +87,6 @@
                         }
                     }
                 });
-//        $locationProvider.html5Mode(true);
 
     }
 
