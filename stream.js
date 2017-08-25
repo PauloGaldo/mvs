@@ -12,7 +12,7 @@ const config = {
     port_stream: process.argv[3],
     host_modulo: process.argv[4],
     port_modulo: process.argv[5],
-    token: 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImF1dGgiOiJST0xFX1VTRVIsUk9MRV9BRE1JTixST0xFX1ciLCJleHAiOjE1MTEzOTUxOTl9.axRoYHLbtYJuJvAG8DOOU09y2r-Y-cVW7QuEgPVPXgCzD5CJAJz8CwjWTUlhE7GDxgVEuIlnh0sx-qKInwo6Qw'
+    token: 'Bearer x'
 };
 fs.writeFile("app/config.json", JSON.stringify(config), function (err) {
     logger.info('config ' + err);
@@ -20,7 +20,7 @@ fs.writeFile("app/config.json", JSON.stringify(config), function (err) {
 
 process.on('uncaughtException', function (err) {
     logger.error(err);
-}); 
+});
 
 logger.info(process.argv[2], process.argv[3]);
 
@@ -41,13 +41,16 @@ io.on('connection', function (socket) {
             if (url) {
                 stream = ffmpeg(url)
                         .inputOptions([
-                            /*-threads', '32',*/
+//                            /**/'-threads', '32',
                             '-rtsp_transport', 'tcp'
                         ])
                         .outputOptions([
                             '-preset', 'fast',
-                            '-f', 'mjpeg',
-                            '-q:v', '4',
+                            '-f', 'image2',
+                            '-q:v', '5',
+                            '-updatefirst', '1',
+                            '-r', '30',
+                            '-q', '5',
                             '-s', '1280x720'
                         ])
                         .on('end', function () {
@@ -61,8 +64,7 @@ io.on('connection', function (socket) {
                         });
                 var ffstream = stream.pipe();
                 ffstream.on('data', function (resp) {
-                    var frame = new Buffer(resp).toString('base64');
-                    socket.emit('data', frame);
+                    socket.emit('data', resp);
                 });
             }
         });
