@@ -22,15 +22,16 @@
             console.log(response);
             socket.emit('streaming', $stateParams.id);
             socket.on('data', function (response) {
-                /*var bytes = new Uint8Array(response);
+                /**/var bytes = new Uint8Array(response);
                 var blob = new Blob([bytes], {type: 'application/octet-binary'});
-                var url = URL.createObjectURL(blob);*/
+                var url = URL.createObjectURL(blob);
                 var img = new Image();
-                img.src = "data:image/jpeg;base64," + response;
+//                img.src = "data:image/jpeg;base64," + response;
                 img.onload = function () {
-                    /*URL.revokeObjectURL(url);*/
+                    /**/URL.revokeObjectURL(url);
                     context.drawImage(img, 0, 0, context.width, context.height);
                 };
+                img.src = url;
             });
         });
 
