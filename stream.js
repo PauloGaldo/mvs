@@ -7,42 +7,43 @@ const io = require('socket.io')(http);
 const Log = require('log');
 const logger = new Log('debug');
 const fs = require('fs');
-const config = {token: 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImF1dGgiOiJST0xFX1VTRVIsUk9MRV9BRE1JTixST0xFX1ciLCJleHAiOjE1MTEzOTUxOTl9.2vk9a_mtaEMIQ18Yrn8NdxYLEgTC12XWyVkEIJMRPXtY3EiaOxvaBhWdkFY37oMFpNVUwzVW8GvmQOdJ8qDqKg'};
 const path = require('path');
-if (process.argv.length === 5) {
+let config = {};
+if (process.argv.length > 2) {
+    config = {
+        host_stream: process.argv[2],
+        port_stream: process.argv[3],
+        host_modulo: process.argv[4],
+        port_modulo: process.argv[5],
+        token: 'Bearer XXX'
+    };
     fs.writeFile(path.join(__dirname, 'app/config.json'), JSON.stringify(config), function (err) {
-        if (err) {
-            logger.error('config ' + err);
-        }
-        logger.info('File successfully created on: ' + path.join(__dirname));
-        config.host_stream = process.argv[2];
-        config.port_stream = process.argv[3];
-        config.host_modulo = process.argv[4];
-        config.port_modulo = process.argv[5];
-    });
-} else {
-    fs.readFile(path.join(__dirname, 'app/config.json'), 'utf8', function (err, data) {
         if (err) {
             logger.error(err);
         }
-        let params = JSON.parse(data);
-        logger.info('Config file found at: ' + path.join(__dirname));
-        config.host_stream = params.host_stream;
-        config.port_stream = params.port_stream;
-        config.host_modulo = params.host_modulo;
-        config.port_modulo = params.port_modulo;
-        config.token = params.token;
+        logger.info('File successfully created on: ' + path.join(__dirname));
+        logger.info(process.argv[2], process.argv[3]);
     });
+} else {
+    try {
+        config = JSON.parse(fs.readFileSync(path.join(__dirname, 'app/config.json'), 'utf8'));
+        logger.info('Config file found at: ' + path.join(__dirname));
+    } catch (err) {
+        logger.error(err);
+    }
 }
-
 
 process.on('uncaughtException', function (err) {
     logger.error(err);
 });
-logger.info(process.argv[2], process.argv[3]);
 http.listen(config.port_stream, function () {
-    logger.info('Listening port: ' + config.port_stream);
+    logger.info('Port: ' + config.port_stream);
+    logger.info('Host: ' + config.host_stream);
+    logger.info('Host Modulo V: ' + config.host_modulo);
+    logger.info('Port Modulo V: ' + config.port_modulo);
 });
+
+
 app.use(express.static(__dirname + '/app'));
 app.use('/bower_components', express.static(__dirname + '/bower_components'));
 io.on('connection', function (socket) {
