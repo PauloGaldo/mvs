@@ -7,30 +7,44 @@ const io = require('socket.io')(http);
 const Log = require('log');
 const logger = new Log('debug');
 const fs = require('fs');
-const config = {
-    host_stream: process.argv[2],
-    port_stream: process.argv[3],
-    host_modulo: process.argv[4],
-    port_modulo: process.argv[5],
-    token: 'Bearer x'
-};
-fs.writeFile("app/config.json", JSON.stringify(config), function (err) {
-    logger.info('config ' + err);
-});
+const config = {token: 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImF1dGgiOiJST0xFX1VTRVIsUk9MRV9BRE1JTixST0xFX1ciLCJleHAiOjE1MTEzOTUxOTl9.2vk9a_mtaEMIQ18Yrn8NdxYLEgTC12XWyVkEIJMRPXtY3EiaOxvaBhWdkFY37oMFpNVUwzVW8GvmQOdJ8qDqKg'};
+const path = require('path');
+if (process.argv.length === 5) {
+    fs.writeFile(path.join(__dirname, 'app/config.json'), JSON.stringify(config), function (err) {
+        if (err) {
+            logger.error('config ' + err);
+        }
+        logger.info('File successfully created on: ' + path.join(__dirname));
+        config.host_stream = process.argv[2];
+        config.port_stream = process.argv[3];
+        config.host_modulo = process.argv[4];
+        config.port_modulo = process.argv[5];
+    });
+} else {
+    fs.readFile(path.join(__dirname, 'app/config.json'), 'utf8', function (err, data) {
+        if (err) {
+            logger.error(err);
+        }
+        let params = JSON.parse(data);
+        logger.info('Config file found at: ' + path.join(__dirname));
+        config.host_stream = params.host_stream;
+        config.port_stream = params.port_stream;
+        config.host_modulo = params.host_modulo;
+        config.port_modulo = params.port_modulo;
+        config.token = params.token;
+    });
+}
+
 
 process.on('uncaughtException', function (err) {
     logger.error(err);
 });
-
 logger.info(process.argv[2], process.argv[3]);
-
 http.listen(config.port_stream, function () {
     logger.info('Listening port: ' + config.port_stream);
 });
-
 app.use(express.static(__dirname + '/app'));
 app.use('/bower_components', express.static(__dirname + '/bower_components'));
-
 io.on('connection', function (socket) {
     var stream = null;
     logger.info('connected to socket');
@@ -81,7 +95,6 @@ io.on('connection', function (socket) {
         }
     });
 });
-
 /**
  * 00000000-0000-0000-0000-00047e02545b
  * 00000000-0000-0000-0000-00047e025587
@@ -119,7 +132,6 @@ app.get('/video/flash/:id', function (req, res) {
         }
     });
 });
-
 /**
  * 00000000-0000-0000-0000-00047e02545b
  * 00000000-0000-0000-0000-00047e025587
@@ -157,7 +169,6 @@ app.get('/video/html5/:id', function (req, res) {
         }
     });
 });
-
 function setCameraUrl(guid, callback) {
     var path = '/api/v1/camera/' + guid + '/video/url';
     var options = {
